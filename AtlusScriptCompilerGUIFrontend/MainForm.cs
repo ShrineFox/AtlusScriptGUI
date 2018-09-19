@@ -24,11 +24,11 @@ namespace AtlusScriptCompilerGUIFrontend
             InitializeComponent();
             Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
             comboGame.DataSource = gamesDropdown;
+            comboGame.SelectedIndex = 1;
         }
 
         public List<string> gamesDropdown = new List<string>()
         {
-            "Persona 3",
             "Persona 4",
             "Persona 5"
         };
@@ -57,11 +57,14 @@ namespace AtlusScriptCompilerGUIFrontend
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             if (fileList.Count() > 0)
             {
-                string ext = Path.GetExtension(fileList[0]).ToUpper();
-                if (ext == ".MSG" || ext == ".FLOW")
+                foreach (string filePath in fileList)
                 {
-                    compileArg = "-Compile";
-                    UseCompiler(fileList[0], ext);
+                    string ext = Path.GetExtension(filePath.ToUpper());
+                    if (ext == ".MSG" || ext == ".FLOW")
+                    {
+                        compileArg = "-Compile";
+                        UseCompiler(filePath, ext);
+                    }
                 }
             }
         }
@@ -71,21 +74,14 @@ namespace AtlusScriptCompilerGUIFrontend
             if (File.Exists("AtlusScriptCompiler.exe")) {
                 switch (comboGame.SelectedIndex)
                 {
-                    case 0: //P3
-                        encodingArg = "-Encoding P3";
-                        if (extension != ".BMD")
-                            libraryArg = "-Library P3";
-                        if (extension == ".MSG" || extension == ".FLOW")
-                            outFormatArg = "-OutFormat V1";
-                        break;
-                    case 1: //P4
+                    case 0: //P4
                         encodingArg = "-Encoding P4";
                         if (extension != ".BMD")
                             libraryArg = "-Library P4";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 2: //P5
+                    case 1: //P5
                         encodingArg = "-Encoding P5";
                         if (extension != ".BMD")
                             libraryArg = "-Library P5";
