@@ -30,6 +30,7 @@ namespace AtlusScriptCompilerGUIFrontend
         public List<string> gamesDropdown = new List<string>()
         {
             "Persona 4",
+            "Persona 4 Golden",
             "Persona 5"
         };
 
@@ -81,7 +82,14 @@ namespace AtlusScriptCompilerGUIFrontend
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 1: //P5
+                    case 1: //P4G
+                        encodingArg = "-Encoding P4";
+                        if (extension != ".BMD")
+                            libraryArg = "-Library P4G";
+                        if (extension == ".MSG" || extension == ".FLOW")
+                            outFormatArg = "-OutFormat V1";
+                        break;
+                    case 2: //P5
                         encodingArg = "-Encoding P5";
                         if (extension != ".BMD")
                             libraryArg = "-Library P5";
@@ -99,6 +107,9 @@ namespace AtlusScriptCompilerGUIFrontend
                 args.Append($"{outFormatArg} ");
                 args.Append($"{libraryArg} ");
                 args.Append($"{encodingArg} ");
+
+                if (chk_Hook.Checked)
+                    args.Append($"-Hook");
 
                 System.Diagnostics.Process.Start("CMD.exe", $"/c {args.ToString()}");
                 droppedFilePath = "";
