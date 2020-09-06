@@ -34,6 +34,7 @@
             this.comboGame = new System.Windows.Forms.ComboBox();
             this.labelGame = new System.Windows.Forms.Label();
             this.chk_Hook = new System.Windows.Forms.CheckBox();
+            this.chk_Log = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnCompile
@@ -92,12 +93,23 @@
             this.chk_Hook.Text = "Enable Hooking";
             this.chk_Hook.UseVisualStyleBackColor = true;
             // 
+            // chk_Log
+            // 
+            this.chk_Log.AutoSize = true;
+            this.chk_Log.Location = new System.Drawing.Point(307, 14);
+            this.chk_Log.Name = "chk_Log";
+            this.chk_Log.Size = new System.Drawing.Size(74, 17);
+            this.chk_Log.TabIndex = 5;
+            this.chk_Log.Text = "Show Log";
+            this.chk_Log.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(391, 250);
+            this.Controls.Add(this.chk_Log);
             this.Controls.Add(this.chk_Hook);
             this.Controls.Add(this.labelGame);
             this.Controls.Add(this.comboGame);
@@ -122,6 +134,7 @@
         private System.Windows.Forms.ComboBox comboGame;
         private System.Windows.Forms.Label labelGame;
         private System.Windows.Forms.CheckBox chk_Hook;
+        private System.Windows.Forms.CheckBox chk_Log;
     }
 }
 

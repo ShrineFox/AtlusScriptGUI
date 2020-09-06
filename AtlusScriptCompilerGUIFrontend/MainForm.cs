@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -24,11 +25,13 @@ namespace AtlusScriptCompilerGUIFrontend
             InitializeComponent();
             Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
             comboGame.DataSource = gamesDropdown;
-            comboGame.SelectedIndex = 1;
+            comboGame.SelectedIndex = 3;
         }
 
         public List<string> gamesDropdown = new List<string>()
         {
+            "Persona 3",
+            "Persona 3 FES",
             "Persona 4",
             "Persona 4 Golden",
             "Persona 5"
@@ -75,21 +78,35 @@ namespace AtlusScriptCompilerGUIFrontend
             if (File.Exists("AtlusScriptCompiler.exe")) {
                 switch (comboGame.SelectedIndex)
                 {
-                    case 0: //P4
+                    case 0: //P3FES
+                        encodingArg = "-Encoding P3";
+                        if (extension != ".BMD")
+                            libraryArg = "-Library P3F";
+                        if (extension == ".MSG" || extension == ".FLOW")
+                            outFormatArg = "-OutFormat V1";
+                        break;
+                    case 1: //P3FES
+                        encodingArg = "-Encoding P3";
+                        if (extension != ".BMD")
+                            libraryArg = "-Library P3";
+                        if (extension == ".MSG" || extension == ".FLOW")
+                            outFormatArg = "-OutFormat V1";
+                        break;
+                    case 2: //P4
                         encodingArg = "-Encoding P4";
                         if (extension != ".BMD")
                             libraryArg = "-Library P4";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 1: //P4G
+                    case 3: //P4G
                         encodingArg = "-Encoding P4";
                         if (extension != ".BMD")
                             libraryArg = "-Library P4G";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 2: //P5
+                    case 4: //P5
                         encodingArg = "-Encoding P5";
                         if (extension != ".BMD")
                             libraryArg = "-Library P5";
@@ -111,7 +128,7 @@ namespace AtlusScriptCompilerGUIFrontend
                 if (chk_Hook.Checked)
                     args.Append($"-Hook");
 
-                System.Diagnostics.Process.Start("CMD.exe", $"/c {args.ToString()}");
+                RunCMD(args.ToString());
                 droppedFilePath = "";
                 compileArg = "";
                 outFormatArg = "";
@@ -121,6 +138,23 @@ namespace AtlusScriptCompilerGUIFrontend
             else
             {
                 MessageBox.Show("Could not find AtlusScriptCompiler.exe. Put this program in the same folder and try running it again!", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void RunCMD(string args)
+        {
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = "cmd";
+            start.Arguments = $"/C {args}";
+            start.UseShellExecute = true;
+            start.RedirectStandardOutput = false;
+            if (!chk_Log.Checked)
+                start.WindowStyle = ProcessWindowStyle.Hidden;
+            else
+                start.Arguments = start.Arguments.Replace("/C", "/K");
+            using (Process process = Process.Start(start))
+            {
+
             }
         }
 
