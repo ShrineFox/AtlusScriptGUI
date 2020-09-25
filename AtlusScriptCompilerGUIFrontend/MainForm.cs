@@ -34,7 +34,8 @@ namespace AtlusScriptCompilerGUIFrontend
             "Persona 3 FES",
             "Persona 4",
             "Persona 4 Golden",
-            "Persona 5"
+            "Persona 5",
+            "Persona 5 Royal"
         };
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -110,6 +111,15 @@ namespace AtlusScriptCompilerGUIFrontend
                         encodingArg = "-Encoding P5";
                         if (extension != ".BMD")
                             libraryArg = "-Library P5";
+                        if (extension == ".MSG")
+                            outFormatArg = "-OutFormat V1BE";
+                        if (extension == ".FLOW")
+                            outFormatArg = "-OutFormat V3BE";
+                        break;
+                    case 5: //P5R
+                        encodingArg = "-Encoding P5";
+                        if (extension != ".BMD")
+                            libraryArg = "-Library P5R";
                         if (extension == ".MSG")
                             outFormatArg = "-OutFormat V1BE";
                         if (extension == ".FLOW")
