@@ -79,17 +79,17 @@ namespace AtlusScriptCompilerGUIFrontend
             if (File.Exists("AtlusScriptCompiler.exe")) {
                 switch (comboGame.SelectedIndex)
                 {
-                    case 0: //P3FES
+                    case 0: //P3
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
-                            libraryArg = "-Library P3F";
+                            libraryArg = "-Library P3";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
                     case 1: //P3FES
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
-                            libraryArg = "-Library P3";
+                            libraryArg = "-Library P3F";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
