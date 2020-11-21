@@ -30,6 +30,7 @@ namespace AtlusScriptCompilerGUIFrontend
 
         public List<string> gamesDropdown = new List<string>()
         {
+            "Persona 3 Portable",
             "Persona 3",
             "Persona 3 FES",
             "Persona 4",
@@ -79,35 +80,42 @@ namespace AtlusScriptCompilerGUIFrontend
             if (File.Exists("AtlusScriptCompiler.exe")) {
                 switch (comboGame.SelectedIndex)
                 {
-                    case 0: //P3FES
+                    case 0: //P3P
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
-                            libraryArg = "-Library P3F";
+                            libraryArg = "-Library P3P";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 1: //P3FES
+                    case 1: //P3
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
                             libraryArg = "-Library P3";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 2: //P4
+                    case 2: //P3FES
+                        encodingArg = "-Encoding P3";
+                        if (extension != ".BMD")
+                            libraryArg = "-Library P3F";
+                        if (extension == ".MSG" || extension == ".FLOW")
+                            outFormatArg = "-OutFormat V1";
+                        break;
+                    case 3: //P4
                         encodingArg = "-Encoding P4";
                         if (extension != ".BMD")
                             libraryArg = "-Library P4";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 3: //P4G
+                    case 4: //P4G
                         encodingArg = "-Encoding P4";
                         if (extension != ".BMD")
                             libraryArg = "-Library P4G";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 4: //P5
+                    case 5: //P5
                         encodingArg = "-Encoding P5";
                         if (extension != ".BMD")
                             libraryArg = "-Library P5";
@@ -116,7 +124,7 @@ namespace AtlusScriptCompilerGUIFrontend
                         if (extension == ".FLOW")
                             outFormatArg = "-OutFormat V3BE";
                         break;
-                    case 5: //P5R
+                    case 6: //P5R
                         encodingArg = "-Encoding P5";
                         if (extension != ".BMD")
                             libraryArg = "-Library P5R";
