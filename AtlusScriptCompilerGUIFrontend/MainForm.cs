@@ -90,7 +90,7 @@ namespace AtlusScriptCompilerGUIFrontend
                     case 1: //P3
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
-                            libraryArg = "-Library P3F";
+                            libraryArg = "-Library P3";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
