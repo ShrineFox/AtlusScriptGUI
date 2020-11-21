@@ -136,7 +136,10 @@ namespace AtlusScriptCompilerGUIFrontend
                 args.Append($"{encodingArg} ");
 
                 if (chk_Hook.Checked)
-                    args.Append($"-Hook");
+                    args.Append($" -Hook");
+
+                if (chk_Disassemble.Checked)
+                    args.Append($" -Disassemble");
 
                 RunCMD(args.ToString());
                 droppedFilePath = "";
