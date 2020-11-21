@@ -90,7 +90,7 @@ namespace AtlusScriptCompilerGUIFrontend
                     case 1: //P3
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
-                            libraryArg = "-Library P3";
+                            libraryArg = "-Library P3F";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
@@ -144,7 +144,10 @@ namespace AtlusScriptCompilerGUIFrontend
                 args.Append($"{encodingArg} ");
 
                 if (chk_Hook.Checked)
-                    args.Append($"-Hook");
+                    args.Append($" -Hook");
+
+                if (chk_Disassemble.Checked)
+                    args.Append($" -Disassemble");
 
                 RunCMD(args.ToString());
                 droppedFilePath = "";
