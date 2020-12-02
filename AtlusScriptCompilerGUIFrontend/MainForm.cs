@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,15 +18,17 @@ namespace AtlusScriptCompilerGUIFrontend
         public string compileArg = "";
         public string encodingArg = "";
         public string libraryArg = "";
-
         public string outFormatArg = "";
-
+        
         public MainForm()
         {
             InitializeComponent();
             Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
             comboGame.DataSource = gamesDropdown;
             comboGame.SelectedIndex = 3;
+
+            
+
         }
 
         public List<string> gamesDropdown = new List<string>()
@@ -44,40 +47,56 @@ namespace AtlusScriptCompilerGUIFrontend
 
         }
 
-        private void DecompileDragDrop(object sender, DragEventArgs e)
+        private void DecompileDragDrop(object sender, DragEventArgs e)//Rather than running the thing for each iteration, we get a list of all the args and then run them in one cmd window
         {
-            string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (fileList.Count() > 0)
-            {
-                string ext = Path.GetExtension(fileList[0]).ToUpper();
-                if (ext == ".BMD" || ext == ".BF")
+            if (File.Exists("AtlusScriptCompiler.exe")) {
+                string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                ArrayList args = new ArrayList();
+                for (int i = 0; i < fileList.Count(); i++)
                 {
-                    compileArg = "-Decompile";
-                    UseCompiler(fileList[0], ext);
+                    string ext = Path.GetExtension(fileList[i]).ToUpper();
+                    if (ext == ".BMD" || ext == ".BF")
+                    {
+                        compileArg = "-Decompile";
+                        args.Add(GetArgument(fileList[i], ext));
+                    }
                 }
+                RunCMD(args);
+            }
+            else
+            {
+                MessageBox.Show("Could not find AtlusScriptCompiler.exe. Put this program in the same folder and try running it again!", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
         private void CompileDragDrop(object sender, DragEventArgs e)
         {
-            string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (fileList.Count() > 0)
+
+            if (File.Exists("AtlusScriptCompiler.exe"))
             {
-                foreach (string filePath in fileList)
+                string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                ArrayList args = new ArrayList();
+                for (int i = 0; i < fileList.Count(); i++)
                 {
-                    string ext = Path.GetExtension(filePath.ToUpper());
+                    string ext = Path.GetExtension(fileList[i]).ToUpper();
                     if (ext == ".MSG" || ext == ".FLOW")
                     {
                         compileArg = "-Compile";
-                        UseCompiler(filePath, ext);
+                        args.Add(GetArgument(fileList[i], ext));
                     }
                 }
+                RunCMD(args);
             }
+            else
+            {
+                MessageBox.Show("Could not find AtlusScriptCompiler.exe. Put this program in the same folder and try running it again!", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
         }
 
-        public void UseCompiler(string droppedFilePath, string extension)
+        public string GetArgument(string droppedFilePath, string extension)
         {
-            if (File.Exists("AtlusScriptCompiler.exe")) {
+             
                 switch (comboGame.SelectedIndex)
                 {
                     case 0: //P3P
@@ -154,30 +173,42 @@ namespace AtlusScriptCompilerGUIFrontend
                 }
                 
 
-                RunCMD(args.ToString());
+                //RunCMD(args.ToString());
                 droppedFilePath = "";
                 compileArg = "";
                 outFormatArg = "";
                 libraryArg = "";
                 encodingArg = "";
-            }
-            else
-            {
-                MessageBox.Show("Could not find AtlusScriptCompiler.exe. Put this program in the same folder and try running it again!", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
+                return args.ToString();
 
-        private void RunCMD(string args)
+            
+            
+        }//Used to be get compiler
+
+        private void RunCMD(ArrayList args)//Now runs a list of args, rather than running individually
         {
             ProcessStartInfo start = new ProcessStartInfo();
+
             start.FileName = "cmd";
-            start.Arguments = $"/C {args}";
             start.UseShellExecute = true;
             start.RedirectStandardOutput = false;
+
+            //Creates a long argument string, putting && tells cmd to run the command multiple times
+            StringBuilder cmdInput = new StringBuilder();
+            cmdInput.Append($"/C {args[0]} && ");
+            for (int i = 1; i < args.Count-1; i++)
+            {
+                cmdInput.Append($"{args[i]} && ");
+            }
+            cmdInput.Append(args[args.Count - 1]);
+            start.Arguments = cmdInput.ToString();
+
+
             if (!chk_Log.Checked)
                 start.WindowStyle = ProcessWindowStyle.Hidden;
             else
                 start.Arguments = start.Arguments.Replace("/C", "/K");
+
             using (Process process = Process.Start(start))
             {
 
