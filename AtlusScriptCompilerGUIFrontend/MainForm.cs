@@ -138,16 +138,21 @@ namespace AtlusScriptCompilerGUIFrontend
                 StringBuilder args = new StringBuilder();
                 args.Append("AtlusScriptCompiler.exe ");
                 args.Append($"\"{droppedFilePath}\" ");
-                args.Append($"{compileArg} ");
-                args.Append($"{outFormatArg} ");
-                args.Append($"{libraryArg} ");
-                args.Append($"{encodingArg} ");
-
-                if (chk_Hook.Checked)
-                    args.Append($" -Hook");
-
-                if (chk_Disassemble.Checked)
+                if (chk_Disassemble.Checked)//Omits all args if you are disassembling
+                {
                     args.Append($" -Disassemble");
+                }
+                else
+                {
+                    args.Append($"{compileArg} ");
+                    args.Append($"{outFormatArg} ");
+                    args.Append($"{libraryArg} ");
+                    args.Append($"{encodingArg} ");
+
+                    if (chk_Hook.Checked)
+                        args.Append($" -Hook");
+                }
+                
 
                 RunCMD(args.ToString());
                 droppedFilePath = "";
