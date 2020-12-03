@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtlusScriptCompilerGUIFrontend", "AtlusScriptCompilerGUIFrontend\AtlusScriptCompilerGUIFrontend.csproj", "{B49F0A68-EAF7-4DEF-BC6B-09AD751CEEE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtlusScriptCompilerGUIFrontendDarkMode", "darkmode\AtlusScriptCompilerGUIFrontendDarkMode.csproj", "{D7B8F80D-D92B-40D0-99A2-31456DB935D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{B49F0A68-EAF7-4DEF-BC6B-09AD751CEEE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B49F0A68-EAF7-4DEF-BC6B-09AD751CEEE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B49F0A68-EAF7-4DEF-BC6B-09AD751CEEE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7B8F80D-D92B-40D0-99A2-31456DB935D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7B8F80D-D92B-40D0-99A2-31456DB935D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7B8F80D-D92B-40D0-99A2-31456DB935D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7B8F80D-D92B-40D0-99A2-31456DB935D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4CED7D05-3A59-4115-9CB2-BF9DD9B44658}
 	EndGlobalSection
 EndGlobal
