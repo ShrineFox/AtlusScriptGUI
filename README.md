@@ -1,5 +1,5 @@
 # AtlusScriptCompiler-GUI-Frontend
-GUI that automatically passes commandline arguments to AtlusScriptCompiler
+GUI that automatically passes commandline arguments to AtlusScriptCompiler  
 ![](https://i.imgur.com/VVQsDqY.png)
 # Usage
 Place this EXE in the same folder as AtlusScriptCompiler.exe and run it. Arguments will automatically be passed to the compiler by dragging files onto the window.  
