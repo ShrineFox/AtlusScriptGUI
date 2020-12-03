@@ -105,6 +105,8 @@ namespace AtlusScriptCompilerGUIFrontend
                         renamed = renamed.Replace(".MSG", "");
                         renamed = renamed.Replace(".FLOW", "");
                         renamed = renamed.Replace(".flow", "");
+                        renamed = renamed.Replace(".BF", "");
+                        renamed = renamed.Replace(".bf", "");
                         renamed += ".bf";
 
                         if (System.IO.File.Exists(renamed)) { System.IO.File.Delete(renamed); }
