@@ -33,13 +33,18 @@ namespace AtlusScriptCompilerGUIFrontend
 
         public List<string> gamesDropdown = new List<string>()
         {
+            "SMT 3 Nocturne",
+            "SMT Digital Devil Saga",
             "Persona 3 Portable",
             "Persona 3",
             "Persona 3 FES",
             "Persona 4",
             "Persona 4 Golden",
             "Persona 5",
-            "Persona 5 Royal"
+            "Persona 5 Royal",
+            "Persona Q2",
+            
+            
         };
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -76,22 +81,43 @@ namespace AtlusScriptCompilerGUIFrontend
             {
                 string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
                 ArrayList args = new ArrayList();
+                ArrayList input = new ArrayList();
                 for (int i = 0; i < fileList.Count(); i++)
                 {
                     string ext = Path.GetExtension(fileList[i]).ToUpper();
                     if (ext == ".MSG" || ext == ".FLOW")
                     {
+                        input.Add(fileList[i]);
                         compileArg = "-Compile";
                         args.Add(GetArgument(fileList[i], ext));
                     }
                 }
                 RunCMD(args);
+                if (chk_Overwrite.Checked)
+                {
+                    for (int i = 0; i < args.Count; i++)
+                    {
+                        String created = fileList[i] + ".bf";
+
+                        
+                        String renamed = (string)fileList[i];
+                        renamed = renamed.Replace(".msg", "");
+                        renamed = renamed.Replace(".MSG", "");
+                        renamed = renamed.Replace(".FLOW", "");
+                        renamed = renamed.Replace(".flow", "");
+                        renamed += ".bf";
+
+                        if (System.IO.File.Exists(renamed)) { System.IO.File.Delete(renamed); }
+                        System.IO.File.Move(created, renamed);
+                    }
+                }
             }
             else
             {
                 MessageBox.Show("Could not find AtlusScriptCompiler.exe. Put this program in the same folder and try running it again!", "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
+            
         }
 
         public string GetArgument(string droppedFilePath, string extension)
@@ -99,42 +125,60 @@ namespace AtlusScriptCompilerGUIFrontend
              
                 switch (comboGame.SelectedIndex)
                 {
-                    case 0: //P3P
+                    case 0: //SMT3
+                      encodingArg = "-Encoding P3";
+                      if (extension != ".BMD")
+                          libraryArg = "-Library SMT3";
+                      if (extension == ".MSG")
+                          outFormatArg = "-OutFormat V1";
+                      if (extension == ".FLOW")
+                           outFormatArg = "-OutFormat V1";
+                       break;
+                    case 1: //DDS
+                       encodingArg = "-Encoding P3";
+                       if (extension != ".BMD")
+                           libraryArg = "-Library DDS";
+                       if (extension == ".MSG")
+                           outFormatArg = "-OutFormat V1DDS";
+                      if (extension == ".FLOW")
+                          outFormatArg = "-OutFormat V1DDS";
+                        break;
+                    case 2: //P3P
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
                             libraryArg = "-Library P3P";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 1: //P3
+                    case 3: //P3
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
                             libraryArg = "-Library P3";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 2: //P3FES
+                    case 4: //P3FES
                         encodingArg = "-Encoding P3";
                         if (extension != ".BMD")
                             libraryArg = "-Library P3F";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 3: //P4
+                    case 5: //P4
                         encodingArg = "-Encoding P4";
                         if (extension != ".BMD")
                             libraryArg = "-Library P4";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 4: //P4G
+                    case 6: //P4G
                         encodingArg = "-Encoding P4";
                         if (extension != ".BMD")
                             libraryArg = "-Library P4G";
                         if (extension == ".MSG" || extension == ".FLOW")
                             outFormatArg = "-OutFormat V1";
                         break;
-                    case 5: //P5
+                    case 7: //P5
                         encodingArg = "-Encoding P5";
                         if (extension != ".BMD")
                             libraryArg = "-Library P5";
@@ -143,7 +187,7 @@ namespace AtlusScriptCompilerGUIFrontend
                         if (extension == ".FLOW")
                             outFormatArg = "-OutFormat V3BE";
                         break;
-                    case 6: //P5R
+                    case 8: //P5R
                         encodingArg = "-Encoding P5";
                         if (extension != ".BMD")
                             libraryArg = "-Library P5R";
@@ -152,7 +196,18 @@ namespace AtlusScriptCompilerGUIFrontend
                         if (extension == ".FLOW")
                             outFormatArg = "-OutFormat V3BE";
                         break;
-                }
+                    case 9: //PQ2
+                        encodingArg = "-Encoding SJ";
+                        if (extension != ".BMD")
+                            libraryArg = "-Library PQ2";
+                        if (extension == ".MSG")
+                            outFormatArg = "-OutFormat V1";
+                        if (extension == ".FLOW")
+                            outFormatArg = "-OutFormat V1";
+                        break;
+
+                    
+            }
 
                 StringBuilder args = new StringBuilder();
                 args.Append("AtlusScriptCompiler.exe ");
@@ -201,6 +256,10 @@ namespace AtlusScriptCompilerGUIFrontend
                 cmdInput.Append($"{args[i]} && ");
             }
             cmdInput.Append(args[args.Count - 1]);
+            if (chk_Overwrite.Checked)
+            {
+                cmdInput.Append(" && EXIT");
+            }
             start.Arguments = cmdInput.ToString();
 
 
@@ -211,8 +270,13 @@ namespace AtlusScriptCompilerGUIFrontend
 
             using (Process process = Process.Start(start))
             {
-
+                if (chk_Overwrite.Checked)
+                {
+                    process.WaitForExit();
+                }
             }
+
+            
         }
 
         private void DecompileDragEnter(object sender, DragEventArgs e)
@@ -233,6 +297,19 @@ namespace AtlusScriptCompilerGUIFrontend
         private void CompileClick(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+            
+        }
+
+        private void OpenLog(object sender, EventArgs e)
+        {
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = "AtlusScriptCompiler.log";
+            start.UseShellExecute = true;
+            Process.Start(start);
         }
     }
 }
