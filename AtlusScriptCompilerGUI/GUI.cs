@@ -196,7 +196,7 @@ namespace AtlusScriptCompilerGUI
                 cmdInput.Append(" && EXIT");
 
             start.Arguments = cmdInput.ToString();
-            MessageBox.Show(cmdInput.ToString());
+            //MessageBox.Show(cmdInput.ToString());
 
             //Whether or not to show log while compiling
             if (!Log)
