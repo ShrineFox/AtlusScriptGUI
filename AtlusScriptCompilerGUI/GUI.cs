@@ -171,7 +171,7 @@ namespace AtlusScriptCompilerGUI
                         .Replace(".bf", "").Replace(".BF", "").Replace(".bmd", "")
                         .Replace(".BMD", "");
                     if (extension == ".MSG")
-                        args.Append($"-Out \"{outPath + ".msg"}\" ");
+                        args.Append($"-Out \"{outPath + ".bmd"}\" ");
                     else if (extension == ".FLOW")
                         args.Append($"-Out \"{outPath + ".bf"}\" ");
                 } 
