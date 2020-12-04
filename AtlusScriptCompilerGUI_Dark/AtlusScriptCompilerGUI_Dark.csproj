@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B49F0A68-EAF7-4DEF-BC6B-09AD751CEEE6}</ProjectGuid>
+    <ProjectGuid>{D7B8F80D-D92B-40D0-99A2-31456DB935D9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AtlusScriptCompilerGUIFrontend</RootNamespace>
-    <AssemblyName>AtlusScriptCompilerGUIFrontend</AssemblyName>
+    <RootNamespace>AtlusScriptCompilerGUI_Dark</RootNamespace>
+    <AssemblyName>AtlusScriptCompilerGUI_Dark</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,6 +50,9 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DarkUI">
+      <HintPath>..\Dependencies\DarkUI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,15 +66,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainForm.cs">
+    <Compile Include="..\AtlusScriptCompilerGUI\GUI.cs">
+      <Link>GUI.cs</Link>
+    </Compile>
+    <Compile Include="Forms\DarkForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="Forms\DarkForm.Designer.cs">
+      <DependentUpon>DarkForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\DarkForm.resx">
+      <DependentUpon>DarkForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

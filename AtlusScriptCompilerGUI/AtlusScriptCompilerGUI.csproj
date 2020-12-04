@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D7B8F80D-D92B-40D0-99A2-31456DB935D9}</ProjectGuid>
+    <ProjectGuid>{B49F0A68-EAF7-4DEF-BC6B-09AD751CEEE6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AtlusScriptCompilerGUIFrontendDarkMode</RootNamespace>
-    <AssemblyName>AtlusScriptCompilerGUIFrontendDarkMode</AssemblyName>
+    <RootNamespace>AtlusScriptCompilerGUI</RootNamespace>
+    <AssemblyName>AtlusScriptCompilerGUI</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,9 +50,6 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DarkUI">
-      <HintPath>..\Dependencies\DarkUI.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GUI.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
