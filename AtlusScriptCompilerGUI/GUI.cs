@@ -4,9 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AutoUpdaterDotNET;
+using HtmlAgilityPack;
 
 namespace AtlusScriptCompilerGUI
 {
@@ -32,6 +36,71 @@ namespace AtlusScriptCompilerGUI
             "Persona Q2",
         };
 
+        [STAThread]
+        public static void CheckForUpdate()
+        {
+            if (File.Exists("AtlusScriptCompiler.exe"))
+            {
+                string version = "";
+                string download = "";
+
+                // Load webpage in browser
+                HtmlWeb web = new HtmlWeb();
+                web.BrowserTimeout = TimeSpan.FromSeconds(0);
+                var appveyorPage = web.LoadFromBrowser("https://ci.appveyor.com/project/TGEnigma/atlusscripttools/build/artifacts", o =>
+                {
+                    var webBrowser = (WebBrowser)o;
+
+                    // Wait until the download url loads
+                    return webBrowser.Document.Body.InnerHtml.Contains("artifact-type");
+                });
+
+                // Scrape version and download url from HTML
+                version = appveyorPage.DocumentNode.SelectSingleNode("//div[@class='project-build-version ng-binding']").InnerText;
+                download = appveyorPage.DocumentNode.SelectSingleNode("//a[@class='artifact-type zip']").Attributes["href"].Value;
+
+                if (version != "" && download != "")
+                {
+                    // Create/Modify Update XML
+                    File.WriteAllText("updates.xml", $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<item>\n\t<version>{version}.0</version>\n\t<url>{download}</url>\n\t<changelog>https://github.com/TGEnigma/Atlus-Script-Tools/commits/master</changelog>\n\t<mandatory>false</mandatory>\n</item>");
+
+                    //Wait for XML file to exist/not be in use
+                    using (WaitForFile("updates.xml", FileMode.Open, FileAccess.ReadWrite, FileShare.None)) { };
+
+                    // Ask to download and install update from XML data
+                    AutoUpdater.RunUpdateAsAdmin = false;
+                    AutoUpdater.InstalledVersion = new Version(AssemblyName.GetAssemblyName("AtlusScriptCompiler.exe").Version.ToString());
+                    AutoUpdater.Start("updates.xml");
+                }
+            }
+            else
+                MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
+                    "Put this program in the same folder and try running it again!",
+                    "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
+        public static FileStream WaitForFile(string fullPath, FileMode mode, FileAccess access, FileShare share)
+        {
+            for (int numTries = 0; numTries < 10; numTries++)
+            {
+                FileStream fs = null;
+                try
+                {
+                    fs = new FileStream(fullPath, mode, access, share);
+                    return fs;
+                }
+                catch (IOException)
+                {
+                    if (fs != null)
+                    {
+                        fs.Dispose();
+                    }
+                    Thread.Sleep(1000);
+                }
+            }
+            return null;
+        }
+
         public static void Compile(string[] fileList)
         {
             ArrayList args = new ArrayList();
@@ -46,7 +115,7 @@ namespace AtlusScriptCompilerGUI
 
             RunCMD(args);
         }
-        
+
         public static void Decompile(string[] fileList)
         {
             ArrayList args = new ArrayList();
@@ -174,7 +243,7 @@ namespace AtlusScriptCompilerGUI
                         args.Append($"-Out \"{outPath + ".bmd"}\" ");
                     else if (extension == ".FLOW")
                         args.Append($"-Out \"{outPath + ".bf"}\" ");
-                } 
+                }
             }
 
             return args.ToString();
@@ -196,7 +265,6 @@ namespace AtlusScriptCompilerGUI
                 cmdInput.Append(" && EXIT");
 
             start.Arguments = cmdInput.ToString();
-            //MessageBox.Show(cmdInput.ToString());
 
             //Whether or not to show log while compiling
             if (!Log)

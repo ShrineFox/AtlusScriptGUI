@@ -16,6 +16,7 @@ namespace AtlusScriptCompilerGUIFrontend
             comboGame.DataSource = GUI.GamesDropdown;
             if (File.Exists("Game.txt"))
                 try { comboGame.SelectedIndex = GUI.GamesDropdown.IndexOf(File.ReadAllLines("Game.txt")[0]); } catch { }
+            GUI.CheckForUpdate();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
