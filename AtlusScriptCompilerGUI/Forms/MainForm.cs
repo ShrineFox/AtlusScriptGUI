@@ -29,6 +29,7 @@ namespace AtlusScriptCompilerGUIFrontend
             GUI.Log = chk_Log.Checked;
             GUI.Disassemble = chk_Disassemble.Checked;
             GUI.Selection = comboGame.SelectedIndex;
+            GUI.SumBits = chk_SumBits.Checked;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             if (File.Exists("AtlusScriptCompiler.exe"))
@@ -46,6 +47,7 @@ namespace AtlusScriptCompilerGUIFrontend
             GUI.Disassemble = chk_Disassemble.Checked;
             GUI.Selection = comboGame.SelectedIndex;
             GUI.Overwrite = chk_Overwrite.Checked;
+            GUI.SumBits = chk_SumBits.Checked;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             if (File.Exists("AtlusScriptCompiler.exe"))

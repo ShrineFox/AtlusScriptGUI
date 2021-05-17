@@ -47,14 +47,15 @@ namespace AtlusScriptCompilerGUIFrontend
             this.btnOpenLog = new DarkUI.Controls.DarkButton();
             this.chk_Overwrite = new DarkUI.Controls.DarkCheckBox();
             this.tpOverwrite = new System.Windows.Forms.ToolTip(this.components);
+            this.chk_SumBits = new DarkUI.Controls.DarkCheckBox();
             this.SuspendLayout();
             // 
             // btnCompile
             // 
             this.btnCompile.AllowDrop = true;
-            this.btnCompile.Location = new System.Drawing.Point(12, 57);
+            this.btnCompile.Location = new System.Drawing.Point(12, 77);
             this.btnCompile.Name = "btnCompile";
-            this.btnCompile.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnCompile.Padding = new System.Windows.Forms.Padding(5);
             this.btnCompile.Size = new System.Drawing.Size(180, 185);
             this.btnCompile.TabIndex = 0;
             this.btnCompile.Text = "Drag a .BF or .BMD\r\nto Decompile";
@@ -64,9 +65,9 @@ namespace AtlusScriptCompilerGUIFrontend
             // btnDecompile
             // 
             this.btnDecompile.AllowDrop = true;
-            this.btnDecompile.Location = new System.Drawing.Point(199, 57);
+            this.btnDecompile.Location = new System.Drawing.Point(199, 77);
             this.btnDecompile.Name = "btnDecompile";
-            this.btnDecompile.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnDecompile.Padding = new System.Windows.Forms.Padding(5);
             this.btnDecompile.Size = new System.Drawing.Size(180, 185);
             this.btnDecompile.TabIndex = 1;
             this.btnDecompile.Text = "Drag a .FLOW or .MSG \r\nto Compile";
@@ -92,7 +93,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.labelGame.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.labelGame.Location = new System.Drawing.Point(27, 8);
             this.labelGame.Name = "labelGame";
-            this.labelGame.Size = new System.Drawing.Size(44, 15);
+            this.labelGame.Size = new System.Drawing.Size(38, 13);
             this.labelGame.TabIndex = 3;
             this.labelGame.Text = "Game:";
             // 
@@ -103,7 +104,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Hook.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_Hook.Location = new System.Drawing.Point(199, 4);
             this.chk_Hook.Name = "chk_Hook";
-            this.chk_Hook.Size = new System.Drawing.Size(117, 19);
+            this.chk_Hook.Size = new System.Drawing.Size(102, 17);
             this.chk_Hook.TabIndex = 4;
             this.chk_Hook.Text = "Enable Hooking";
             // 
@@ -114,7 +115,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Log.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_Log.Location = new System.Drawing.Point(302, 4);
             this.chk_Log.Name = "chk_Log";
-            this.chk_Log.Size = new System.Drawing.Size(84, 19);
+            this.chk_Log.Size = new System.Drawing.Size(74, 17);
             this.chk_Log.TabIndex = 5;
             this.chk_Log.Text = "Show Log";
             // 
@@ -123,7 +124,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Disassemble.AutoSize = true;
             this.chk_Disassemble.Location = new System.Drawing.Point(199, 28);
             this.chk_Disassemble.Name = "chk_Disassemble";
-            this.chk_Disassemble.Size = new System.Drawing.Size(101, 19);
+            this.chk_Disassemble.Size = new System.Drawing.Size(85, 17);
             this.chk_Disassemble.TabIndex = 6;
             this.chk_Disassemble.Text = "Disassemble";
             // 
@@ -131,7 +132,7 @@ namespace AtlusScriptCompilerGUIFrontend
             // 
             this.btnOpenLog.Location = new System.Drawing.Point(71, 28);
             this.btnOpenLog.Name = "btnOpenLog";
-            this.btnOpenLog.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnOpenLog.Padding = new System.Windows.Forms.Padding(5);
             this.btnOpenLog.Size = new System.Drawing.Size(121, 23);
             this.btnOpenLog.TabIndex = 7;
             this.btnOpenLog.Text = "Open Log";
@@ -142,7 +143,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Overwrite.AutoSize = true;
             this.chk_Overwrite.Location = new System.Drawing.Point(302, 28);
             this.chk_Overwrite.Name = "chk_Overwrite";
-            this.chk_Overwrite.Size = new System.Drawing.Size(80, 19);
+            this.chk_Overwrite.Size = new System.Drawing.Size(71, 17);
             this.chk_Overwrite.TabIndex = 8;
             this.chk_Overwrite.Text = "Overwrite";
             this.tpOverwrite.SetToolTip(this.chk_Overwrite, "Removes excess extension names when compiling, replacing if neccesary. Will close" +
@@ -153,12 +154,23 @@ namespace AtlusScriptCompilerGUIFrontend
             this.tpOverwrite.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.tpOverwrite.ToolTipTitle = "Info";
             // 
+            // chk_SumBits
+            // 
+            this.chk_SumBits.AutoSize = true;
+            this.chk_SumBits.Location = new System.Drawing.Point(199, 51);
+            this.chk_SumBits.Name = "chk_SumBits";
+            this.chk_SumBits.Size = new System.Drawing.Size(67, 17);
+            this.chk_SumBits.TabIndex = 9;
+            this.chk_SumBits.Text = "Sum Bits";
+            this.tpOverwrite.SetToolTip(this.chk_SumBits, "Adds all the hex bits");
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(389, 241);
+            this.ClientSize = new System.Drawing.Size(391, 271);
+            this.Controls.Add(this.chk_SumBits);
             this.Controls.Add(this.chk_Overwrite);
             this.Controls.Add(this.btnOpenLog);
             this.Controls.Add(this.chk_Disassemble);
@@ -169,8 +181,8 @@ namespace AtlusScriptCompilerGUIFrontend
             this.Controls.Add(this.btnDecompile);
             this.Controls.Add(this.btnCompile);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(407, 288);
-            this.MinimumSize = new System.Drawing.Size(407, 288);
+            this.MaximumSize = new System.Drawing.Size(407, 310);
+            this.MinimumSize = new System.Drawing.Size(407, 310);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "AtlusScriptCompiler GUI 2.0 (Dark Mode)";
@@ -192,6 +204,7 @@ namespace AtlusScriptCompilerGUIFrontend
         private DarkCheckBox chk_Disassemble;
         private DarkCheckBox chk_Overwrite;
         public DarkButton btnOpenLog;
+        private DarkCheckBox chk_SumBits;
     }
 }
 

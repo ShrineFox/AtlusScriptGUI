@@ -20,6 +20,7 @@ namespace AtlusScriptCompilerGUI
         public static bool Disassemble { get; set; }
         public static bool Overwrite { get; set; }
         public static bool Log { get; set; }
+        public static bool SumBits { get; set; }
         public static int Selection { get; set; }
 
         public static List<string> GamesDropdown = new List<string>()
@@ -221,7 +222,7 @@ namespace AtlusScriptCompilerGUI
             }
 
             StringBuilder args = new StringBuilder();
-            args.Append("AtlusScriptCompiler.exe ");
+            args.Append("/C AtlusScriptCompiler.exe ");
             args.Append($"\"{droppedFilePath}\" ");
             if (Disassemble) //Omits all args if you are disassembling
                 args.Append($" -Disassemble");
@@ -232,7 +233,9 @@ namespace AtlusScriptCompilerGUI
                 args.Append($"{libraryArg} ");
                 args.Append($"{encodingArg} ");
                 if (Hook)
-                    args.Append($" -Hook ");
+                    args.Append(" -Hook ");
+                if (SumBits)
+                    args.Append(" -SumBits ");
                 if (compileArg == "-Compile " && Overwrite)
                 {
                     string outPath = droppedFilePath.Replace(".flow", "")
@@ -257,15 +260,15 @@ namespace AtlusScriptCompilerGUI
             start.RedirectStandardOutput = false;
 
             StringBuilder cmdInput = new StringBuilder();
-            cmdInput.Append($"/C {args[0]} && ");
-            for (int i = 1; i < args.Count - 1; i++)
-                cmdInput.Append($"{args[i]} && ");
-            cmdInput.Append(args[args.Count - 1]);
+            for (int i = 0; i < args.Count; i++)
+            {
+                if (i > 0)
+                    cmdInput.Append(" && ");
+                cmdInput.Append(args[i]);
+            }
             if (Overwrite)
                 cmdInput.Append(" && EXIT");
-
             start.Arguments = cmdInput.ToString();
-
             //Whether or not to show log while compiling
             if (!Log)
                 start.WindowStyle = ProcessWindowStyle.Hidden;
