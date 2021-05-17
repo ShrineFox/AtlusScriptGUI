@@ -16,7 +16,7 @@ namespace AtlusScriptCompilerGUIFrontend
             comboGame.DataSource = GUI.GamesDropdown;
             if (File.Exists("Game.txt"))
                 try { comboGame.SelectedIndex = GUI.GamesDropdown.IndexOf(File.ReadAllLines("Game.txt")[0]); } catch { }
-            GUI.CheckForUpdate();
+            //GUI.CheckForUpdate();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -30,6 +30,7 @@ namespace AtlusScriptCompilerGUIFrontend
             GUI.Log = chk_Log.Checked;
             GUI.Disassemble = chk_Disassemble.Checked;
             GUI.Selection = comboGame.SelectedIndex;
+            GUI.SumBits = chk_SumBits.Checked;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             if (File.Exists("AtlusScriptCompiler.exe"))
@@ -47,6 +48,7 @@ namespace AtlusScriptCompilerGUIFrontend
             GUI.Disassemble = chk_Disassemble.Checked;
             GUI.Selection = comboGame.SelectedIndex;
             GUI.Overwrite = chk_Overwrite.Checked;
+            GUI.SumBits = chk_SumBits.Checked;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
             if (File.Exists("AtlusScriptCompiler.exe"))
