@@ -141,8 +141,7 @@ namespace AtlusScriptCompilerGUI
             {
                 case 0: //SMT3
                     encodingArg = "-Encoding P3";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library SMT3";
+                    libraryArg = "-Library SMT3";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1";
                     if (extension == ".FLOW")
@@ -150,8 +149,7 @@ namespace AtlusScriptCompilerGUI
                     break;
                 case 1: //DDS
                     encodingArg = "-Encoding P3";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library DDS";
+                    libraryArg = "-Library DDS";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1DDS";
                     if (extension == ".FLOW")
@@ -159,43 +157,37 @@ namespace AtlusScriptCompilerGUI
                     break;
                 case 2: //P3P
                     encodingArg = "-Encoding P3";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library P3P";
+                    libraryArg = "-Library P3P";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
                 case 3: //P3
                     encodingArg = "-Encoding P3";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library P3";
+                    libraryArg = "-Library P3";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
                 case 4: //P3FES
                     encodingArg = "-Encoding P3";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library P3F";
+                    libraryArg = "-Library P3F";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
                 case 5: //P4
                     encodingArg = "-Encoding P4";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library P4";
+                    libraryArg = "-Library P4";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
                 case 6: //P4G
                     encodingArg = "-Encoding P4";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library P4G";
+                    libraryArg = "-Library P4G";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
                 case 7: //P5
                     encodingArg = "-Encoding P5";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library P5";
+                    libraryArg = "-Library P5";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1BE";
                     if (extension == ".FLOW")
@@ -203,8 +195,7 @@ namespace AtlusScriptCompilerGUI
                     break;
                 case 8: //P5R
                     encodingArg = "-Encoding P5";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library P5R";
+                    libraryArg = "-Library P5R";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1BE";
                     if (extension == ".FLOW")
@@ -212,8 +203,7 @@ namespace AtlusScriptCompilerGUI
                     break;
                 case 9: //PQ2
                     encodingArg = "-Encoding SJ";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library PQ2";
+                    libraryArg = "-Library PQ2";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1";
                     if (extension == ".FLOW")
