@@ -34,6 +34,7 @@ namespace AtlusScriptCompilerGUI
             "Persona 4 Golden",
             "Persona 5",
             "Persona 5 Royal",
+            "Persona 5 Royal - EU",
             "Persona Q2",
         };
 
@@ -210,7 +211,16 @@ namespace AtlusScriptCompilerGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 9: //PQ2
+                case 9: //P5REU
+                    encodingArg = "-Encoding P5R_EFIGS";
+                    if (extension != ".BMD")
+                        libraryArg = "-Library P5R";
+                    if (extension == ".MSG")
+                        outFormatArg = "-OutFormat V1"; //V1 = Persona 5 PS4 Output
+                    if (extension == ".FLOW")
+                        outFormatArg = "-OutFormat V3BE";
+                    break;
+                case 10: //PQ2
                     encodingArg = "-Encoding SJ";
                     if (extension != ".BMD")
                         libraryArg = "-Library PQ2";
