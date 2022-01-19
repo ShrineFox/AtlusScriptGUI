@@ -216,7 +216,7 @@ namespace AtlusScriptCompilerGUI
                     if (extension != ".BMD")
                         libraryArg = "-Library P5R";
                     if (extension == ".MSG")
-                        outFormatArg = "-OutFormat V1";
+                        outFormatArg = "-OutFormat V1"; //V1 = Persona 5 PS4 Output
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
