@@ -217,7 +217,7 @@ namespace AtlusScriptCompilerGUI
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1";
                     if (extension == ".FLOW")
-                        outFormatArg = "-OutFormat V1";
+                        outFormatArg = "-OutFormat V2";
                     break;
             }
 
