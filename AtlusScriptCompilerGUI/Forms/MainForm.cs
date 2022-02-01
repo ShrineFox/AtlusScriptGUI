@@ -15,7 +15,6 @@ namespace AtlusScriptCompilerGUIFrontend
             comboGame.DataSource = GUI.GamesDropdown;
             if (File.Exists("Game.txt"))
                 try { comboGame.SelectedIndex = GUI.GamesDropdown.IndexOf(File.ReadAllLines("Game.txt")[0]); } catch { }
-            GUI.CheckForUpdate();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -77,6 +76,38 @@ namespace AtlusScriptCompilerGUIFrontend
         {
             if (comboGame.SelectedIndex != 0)
                 File.WriteAllText("Game.txt", comboGame.SelectedItem.ToString());
+        }
+
+        private void VanillaText_Changed(object sender, EventArgs e)
+        {
+            try
+            {
+                string result = GUI.ConvertVanillaFlag(txtBox_Vanilla.Text);
+                if (result != "-1")
+                    txtBox_Royal.Text = result;
+                else
+                    txtBox_Royal.Text = txtBox_Vanilla.Text;
+            }
+            catch
+            {
+                txtBox_Royal.Text = "Out of Range";
+            }
+        }
+
+        private void RoyalText_Changed(object sender, EventArgs e)
+        {
+            try
+            {
+                string result = GUI.ConvertRoyalFlag(txtBox_Royal.Text);
+                if (result != "-1")
+                    txtBox_Vanilla.Text = result;
+                else
+                    txtBox_Vanilla.Text = txtBox_Royal.Text;
+            }
+            catch
+            {
+                txtBox_Vanilla.Text = "Out of Range";
+            }
         }
     }
 }

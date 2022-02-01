@@ -9,8 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AutoUpdaterDotNET;
-using HtmlAgilityPack;
 
 namespace AtlusScriptCompilerGUI
 {
@@ -34,51 +32,9 @@ namespace AtlusScriptCompilerGUI
             "Persona 4 Golden",
             "Persona 5",
             "Persona 5 Royal",
+            "Persona 5 Royal - EU",
             "Persona Q2",
         };
-
-        [STAThread]
-        public static void CheckForUpdate()
-        {
-            if (File.Exists("AtlusScriptCompiler.exe"))
-            {
-                string version = "";
-                string download = "";
-
-                // Load webpage in browser
-                HtmlWeb web = new HtmlWeb();
-                web.BrowserTimeout = TimeSpan.FromSeconds(0);
-                var appveyorPage = web.LoadFromBrowser("https://ci.appveyor.com/project/TGEnigma/atlusscripttools/build/artifacts", o =>
-                {
-                    var webBrowser = (WebBrowser)o;
-
-                    // Wait until the download url loads
-                    return webBrowser.Document.Body.InnerHtml.Contains("artifact-type");
-                });
-
-                // Scrape version and download url from HTML
-                version = appveyorPage.DocumentNode.SelectSingleNode("//div[@class='project-build-version ng-binding']").InnerText;
-                download = appveyorPage.DocumentNode.SelectSingleNode("//a[@class='artifact-type zip']").Attributes["href"].Value;
-
-                if (version != "" && download != "")
-                {
-                    // Create/Modify Update XML
-                    File.WriteAllText("updates.xml", $"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<item>\n\t<version>{version}.0</version>\n\t<url>{download}</url>\n\t<changelog>https://github.com/TGEnigma/Atlus-Script-Tools/commits/master</changelog>\n\t<mandatory>false</mandatory>\n</item>");
-
-                    //Wait for XML file to exist/not be in use
-                    using (WaitForFile("updates.xml", FileMode.Open, FileAccess.ReadWrite, FileShare.None)) { };
-
-                    // Ask to download and install update from XML data
-                    AutoUpdater.RunUpdateAsAdmin = false;
-                    AutoUpdater.InstalledVersion = new Version(AssemblyName.GetAssemblyName("AtlusScriptCompiler.exe").Version.ToString());
-                    AutoUpdater.Start("updates.xml");
-                }
-            }
-            else
-                MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
-                    "Put this program in the same folder and try running it again!",
-                    "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
 
         public static FileStream WaitForFile(string fullPath, FileMode mode, FileAccess access, FileShare share)
         {
@@ -205,13 +161,22 @@ namespace AtlusScriptCompilerGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 9: //PQ2
+                case 9: //P5REU
+                    encodingArg = "-Encoding P5R_EFIGS";
+                    if (extension != ".BMD")
+                        libraryArg = "-Library P5R";
+                    if (extension == ".MSG")
+                        outFormatArg = "-OutFormat V1"; //V1 = Persona 5 PS4 Output
+                    if (extension == ".FLOW")
+                        outFormatArg = "-OutFormat V3BE";
+                    break;
+                case 10: //PQ2
                     encodingArg = "-Encoding SJ";
                     libraryArg = "-Library PQ2";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1";
                     if (extension == ".FLOW")
-                        outFormatArg = "-OutFormat V1";
+                        outFormatArg = "-OutFormat V2";
                     break;
             }
 
@@ -246,6 +211,16 @@ namespace AtlusScriptCompilerGUI
             }
 
             return args.ToString();
+        }
+
+        public static string ConvertRoyalFlag(string text)
+        {
+            return Flag.ConvertToVanilla(Convert.ToInt32(text)).ToString();
+        }
+
+        public static string ConvertVanillaFlag(string text)
+        {
+            return Flag.ConvertToRoyal(Convert.ToInt32(text)).ToString();
         }
 
         private static void RunCMD(ArrayList args)
