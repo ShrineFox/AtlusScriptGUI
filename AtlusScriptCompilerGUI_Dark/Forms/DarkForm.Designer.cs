@@ -173,6 +173,8 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_SumBits.AutoSize = true;
             this.chk_SumBits.Location = new System.Drawing.Point(265, 63);
             this.chk_SumBits.Margin = new System.Windows.Forms.Padding(4);
+            this.chk_SumBits.Checked = true;
+            this.chk_SumBits.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_SumBits.Name = "chk_SumBits";
             this.chk_SumBits.Size = new System.Drawing.Size(81, 20);
             this.chk_SumBits.TabIndex = 9;

@@ -60,13 +60,15 @@ namespace AtlusScriptCompilerGUI
 
         public static void Compile(string[] fileList)
         {
+            bool firstFile = true;
             ArrayList args = new ArrayList();
             for (int i = 0; i < fileList.Count(); i++)
             {
                 string ext = Path.GetExtension(fileList[i]).ToUpper();
                 if (ext == ".MSG" || ext == ".FLOW")
                 {
-                    args.Add(GetArgument(fileList[i], ext, "-Compile "));
+                    args.Add(GetArgument(fileList[i], ext, "-Compile ", firstFile));
+                    firstFile = false;
                 }
             }
 
@@ -75,19 +77,21 @@ namespace AtlusScriptCompilerGUI
 
         public static void Decompile(string[] fileList)
         {
+            bool firstFile = true;
             ArrayList args = new ArrayList();
             for (int i = 0; i < fileList.Count(); i++)
             {
                 string ext = Path.GetExtension(fileList[i]).ToUpper();
                 if (ext == ".BMD" || ext == ".BF")
                 {
-                    args.Add(GetArgument(fileList[i], ext, "-Decompile "));
+                    args.Add(GetArgument(fileList[i], ext, "-Decompile ", firstFile));
+                    firstFile = false;
                 }
             }
             RunCMD(args);
         }
 
-        private static string GetArgument(string droppedFilePath, string extension, string compileArg)
+        private static string GetArgument(string droppedFilePath, string extension, string compileArg, bool firstFile)
         {
             string encodingArg = "";
             string libraryArg = "";
@@ -177,7 +181,9 @@ namespace AtlusScriptCompilerGUI
             }
 
             StringBuilder args = new StringBuilder();
-            args.Append("/C AtlusScriptCompiler.exe ");
+            if (firstFile)
+                args.Append("/C ");
+            args.Append("AtlusScriptCompiler.exe ");
             args.Append($"\"{droppedFilePath}\" ");
             if (Disassemble) //Omits all args if you are disassembling
                 args.Append($" -Disassemble");
