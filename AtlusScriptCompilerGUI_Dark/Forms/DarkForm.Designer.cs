@@ -270,7 +270,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.MinimumSize = new System.Drawing.Size(537, 371);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "AtlusScriptCompiler GUI 2.1 (Dark Mode)";
+            this.Text = $"AtlusScriptCompiler GUI v2.2 (Dark Mode)";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

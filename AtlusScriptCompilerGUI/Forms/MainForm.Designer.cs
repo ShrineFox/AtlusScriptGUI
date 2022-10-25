@@ -257,7 +257,7 @@
             this.MinimumSize = new System.Drawing.Size(537, 371);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "AtlusScriptCompiler GUI 2.1";
+            this.Text = "AtlusScriptCompiler GUI v2.2";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
