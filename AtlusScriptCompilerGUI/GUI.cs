@@ -26,6 +26,7 @@ namespace AtlusScriptCompilerGUI
             "SMT 3 Nocturne",
             "SMT Digital Devil Saga",
             "Persona 3 Portable",
+            "Persona 3 Portable - EU",
             "Persona 3",
             "Persona 3 FES",
             "Persona 4",
@@ -121,31 +122,37 @@ namespace AtlusScriptCompilerGUI
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 3: //P3
+                case 3: //P3P_EFIGS
+                    encodingArg = "-Encoding P3P_EFIGS";
+                    libraryArg = "-Library P3P";
+                    if (extension == ".MSG" || extension == ".FLOW")
+                        outFormatArg = "-OutFormat V1";
+                    break;
+                case 4: //P3
                     encodingArg = "-Encoding P3";
                     libraryArg = "-Library P3";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 4: //P3FES
+                case 5: //P3FES
                     encodingArg = "-Encoding P3";
                     libraryArg = "-Library P3F";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 5: //P4
+                case 6: //P4
                     encodingArg = "-Encoding P4";
                     libraryArg = "-Library P4";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 6: //P4G
+                case 7: //P4G
                     encodingArg = "-Encoding P4";
                     libraryArg = "-Library P4G";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 7: //P5
+                case 8: //P5
                     encodingArg = "-Encoding P5";
                     libraryArg = "-Library P5";
                     if (extension == ".MSG")
@@ -153,7 +160,7 @@ namespace AtlusScriptCompilerGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 8: //P5R
+                case 9: //P5R
                     encodingArg = "-Encoding P5";
                     libraryArg = "-Library P5R";
                     if (extension == ".MSG")
@@ -161,7 +168,7 @@ namespace AtlusScriptCompilerGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 9: //P5REU
+                case 10: //P5REU
                     encodingArg = "-Encoding P5R_EFIGS";
                     if (extension != ".BMD")
                         libraryArg = "-Library P5R";
@@ -170,7 +177,7 @@ namespace AtlusScriptCompilerGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 10: //PQ2
+                case 11: //PQ2
                     encodingArg = "-Encoding SJ";
                     libraryArg = "-Library PQ2";
                     if (extension == ".MSG")
