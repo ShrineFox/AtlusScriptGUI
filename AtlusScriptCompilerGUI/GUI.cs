@@ -225,30 +225,34 @@ namespace AtlusScriptCompilerGUI
 
         private static void RunCMD(ArrayList args)
         {
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = "cmd";
-            start.UseShellExecute = true;
-            start.RedirectStandardOutput = false;
-
-            StringBuilder cmdInput = new StringBuilder();
-            for (int i = 0; i < args.Count; i++)
+            new Thread(() =>
             {
-                if (i > 0)
-                    cmdInput.Append(" && ");
-                cmdInput.Append(args[i]);
-            }
-            if (Overwrite)
-                cmdInput.Append(" && EXIT");
-            start.Arguments = cmdInput.ToString();
-            //Whether or not to show log while compiling
-            if (!Log)
-                start.WindowStyle = ProcessWindowStyle.Hidden;
-            else
-                start.Arguments = start.Arguments.Replace("/C", "/K");
+                Thread.CurrentThread.IsBackground = true;
+                ProcessStartInfo start = new ProcessStartInfo();
+                start.FileName = "cmd";
+                start.UseShellExecute = true;
+                start.RedirectStandardOutput = false;
 
-            using (Process process = Process.Start(start))
-            {
-            }
+                StringBuilder cmdInput = new StringBuilder();
+                for (int i = 0; i < args.Count; i++)
+                {
+                    if (i > 0)
+                        cmdInput.Append(" && ");
+                    cmdInput.Append(args[i]);
+                }
+                if (Overwrite)
+                    cmdInput.Append(" && EXIT");
+                start.Arguments = cmdInput.ToString();
+                //Whether or not to show log while compiling
+                if (!Log)
+                    start.WindowStyle = ProcessWindowStyle.Hidden;
+                else
+                    start.Arguments = start.Arguments.Replace("/C", "/K");
+
+                using (Process process = Process.Start(start))
+                {
+                }
+            }).Start();
         }
 
         public static void OpenLog()
