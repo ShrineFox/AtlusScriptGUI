@@ -2,12 +2,15 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace AtlusScriptCompilerGUIFrontend
 {
     public partial class MainForm : Form
     {
+        public static Version version = new Version(2, 3);
+
         public MainForm()
         {
             InitializeComponent();
@@ -15,6 +18,7 @@ namespace AtlusScriptCompilerGUIFrontend
             comboGame.DataSource = GUI.GamesDropdown;
             if (File.Exists("Game.txt"))
                 try { comboGame.SelectedIndex = GUI.GamesDropdown.IndexOf(File.ReadAllLines("Game.txt")[0]); } catch { }
+            this.Text += $" v{version.Major}.{version.Minor}";
         }
 
         private void MainForm_Load(object sender, EventArgs e)

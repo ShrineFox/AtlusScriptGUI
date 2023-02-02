@@ -35,6 +35,7 @@ namespace AtlusScriptCompilerGUIFrontend
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnCompile = new DarkUI.Controls.DarkButton();
             this.btnDecompile = new DarkUI.Controls.DarkButton();
@@ -45,7 +46,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Disassemble = new DarkUI.Controls.DarkCheckBox();
             this.btnOpenLog = new DarkUI.Controls.DarkButton();
             this.chk_Overwrite = new DarkUI.Controls.DarkCheckBox();
-            this.tpOverwrite = new System.Windows.Forms.ToolTip();
+            this.tpOverwrite = new System.Windows.Forms.ToolTip(this.components);
             this.chk_SumBits = new DarkUI.Controls.DarkCheckBox();
             this.txtBox_Vanilla = new DarkUI.Controls.DarkTextBox();
             this.txtBox_Royal = new DarkUI.Controls.DarkTextBox();
@@ -102,7 +103,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.labelGame.Location = new System.Drawing.Point(36, 10);
             this.labelGame.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelGame.Name = "labelGame";
-            this.labelGame.Size = new System.Drawing.Size(47, 16);
+            this.labelGame.Size = new System.Drawing.Size(50, 17);
             this.labelGame.TabIndex = 3;
             this.labelGame.Text = "Game:";
             // 
@@ -114,7 +115,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Hook.Location = new System.Drawing.Point(265, 5);
             this.chk_Hook.Margin = new System.Windows.Forms.Padding(4);
             this.chk_Hook.Name = "chk_Hook";
-            this.chk_Hook.Size = new System.Drawing.Size(126, 20);
+            this.chk_Hook.Size = new System.Drawing.Size(130, 21);
             this.chk_Hook.TabIndex = 4;
             this.chk_Hook.Text = "Enable Hooking";
             // 
@@ -126,7 +127,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Log.Location = new System.Drawing.Point(403, 5);
             this.chk_Log.Margin = new System.Windows.Forms.Padding(4);
             this.chk_Log.Name = "chk_Log";
-            this.chk_Log.Size = new System.Drawing.Size(88, 20);
+            this.chk_Log.Size = new System.Drawing.Size(92, 21);
             this.chk_Log.TabIndex = 5;
             this.chk_Log.Text = "Show Log";
             // 
@@ -136,7 +137,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Disassemble.Location = new System.Drawing.Point(265, 34);
             this.chk_Disassemble.Margin = new System.Windows.Forms.Padding(4);
             this.chk_Disassemble.Name = "chk_Disassemble";
-            this.chk_Disassemble.Size = new System.Drawing.Size(109, 20);
+            this.chk_Disassemble.Size = new System.Drawing.Size(110, 21);
             this.chk_Disassemble.TabIndex = 6;
             this.chk_Disassemble.Text = "Disassemble";
             // 
@@ -157,7 +158,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.chk_Overwrite.Location = new System.Drawing.Point(403, 34);
             this.chk_Overwrite.Margin = new System.Windows.Forms.Padding(4);
             this.chk_Overwrite.Name = "chk_Overwrite";
-            this.chk_Overwrite.Size = new System.Drawing.Size(85, 20);
+            this.chk_Overwrite.Size = new System.Drawing.Size(90, 21);
             this.chk_Overwrite.TabIndex = 8;
             this.chk_Overwrite.Text = "Overwrite";
             this.tpOverwrite.SetToolTip(this.chk_Overwrite, "Removes excess extension names when compiling, replacing if neccesary. Will close" +
@@ -171,12 +172,12 @@ namespace AtlusScriptCompilerGUIFrontend
             // chk_SumBits
             // 
             this.chk_SumBits.AutoSize = true;
-            this.chk_SumBits.Location = new System.Drawing.Point(265, 63);
-            this.chk_SumBits.Margin = new System.Windows.Forms.Padding(4);
             this.chk_SumBits.Checked = true;
             this.chk_SumBits.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_SumBits.Location = new System.Drawing.Point(265, 63);
+            this.chk_SumBits.Margin = new System.Windows.Forms.Padding(4);
             this.chk_SumBits.Name = "chk_SumBits";
-            this.chk_SumBits.Size = new System.Drawing.Size(81, 20);
+            this.chk_SumBits.Size = new System.Drawing.Size(85, 21);
             this.chk_SumBits.TabIndex = 9;
             this.chk_SumBits.Text = "Sum Bits";
             this.tpOverwrite.SetToolTip(this.chk_SumBits, "Adds all the hex bits");
@@ -209,7 +210,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.lbl_Royal.ForeColor = System.Drawing.Color.Gainsboro;
             this.lbl_Royal.Location = new System.Drawing.Point(465, 298);
             this.lbl_Royal.Name = "lbl_Royal";
-            this.lbl_Royal.Size = new System.Drawing.Size(43, 16);
+            this.lbl_Royal.Size = new System.Drawing.Size(44, 17);
             this.lbl_Royal.TabIndex = 12;
             this.lbl_Royal.Text = "Royal";
             // 
@@ -219,7 +220,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.lbl_Vanilla.ForeColor = System.Drawing.Color.Gainsboro;
             this.lbl_Vanilla.Location = new System.Drawing.Point(13, 298);
             this.lbl_Vanilla.Name = "lbl_Vanilla";
-            this.lbl_Vanilla.Size = new System.Drawing.Size(48, 16);
+            this.lbl_Vanilla.Size = new System.Drawing.Size(50, 17);
             this.lbl_Vanilla.TabIndex = 13;
             this.lbl_Vanilla.Text = "Vanilla";
             // 
@@ -229,7 +230,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.lbl_BitFlag.ForeColor = System.Drawing.Color.Gainsboro;
             this.lbl_BitFlag.Location = new System.Drawing.Point(13, 274);
             this.lbl_BitFlag.Name = "lbl_BitFlag";
-            this.lbl_BitFlag.Size = new System.Drawing.Size(110, 16);
+            this.lbl_BitFlag.Size = new System.Drawing.Size(117, 17);
             this.lbl_BitFlag.TabIndex = 14;
             this.lbl_BitFlag.Text = "BitFlag Converter";
             // 
@@ -270,7 +271,7 @@ namespace AtlusScriptCompilerGUIFrontend
             this.MinimumSize = new System.Drawing.Size(537, 371);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = $"AtlusScriptCompiler GUI v2.2 (Dark Mode)";
+            this.Text = "AtlusScriptCompiler GUI";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

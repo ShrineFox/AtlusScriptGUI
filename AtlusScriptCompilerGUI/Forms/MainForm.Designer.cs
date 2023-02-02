@@ -92,7 +92,7 @@
             this.labelGame.Location = new System.Drawing.Point(36, 10);
             this.labelGame.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelGame.Name = "labelGame";
-            this.labelGame.Size = new System.Drawing.Size(47, 16);
+            this.labelGame.Size = new System.Drawing.Size(50, 17);
             this.labelGame.TabIndex = 3;
             this.labelGame.Text = "Game:";
             // 
@@ -104,7 +104,7 @@
             this.chk_Hook.Location = new System.Drawing.Point(265, 5);
             this.chk_Hook.Margin = new System.Windows.Forms.Padding(4);
             this.chk_Hook.Name = "chk_Hook";
-            this.chk_Hook.Size = new System.Drawing.Size(126, 20);
+            this.chk_Hook.Size = new System.Drawing.Size(130, 21);
             this.chk_Hook.TabIndex = 4;
             this.chk_Hook.Text = "Enable Hooking";
             this.chk_Hook.UseVisualStyleBackColor = true;
@@ -117,7 +117,7 @@
             this.chk_Log.Location = new System.Drawing.Point(403, 5);
             this.chk_Log.Margin = new System.Windows.Forms.Padding(4);
             this.chk_Log.Name = "chk_Log";
-            this.chk_Log.Size = new System.Drawing.Size(88, 20);
+            this.chk_Log.Size = new System.Drawing.Size(92, 21);
             this.chk_Log.TabIndex = 5;
             this.chk_Log.Text = "Show Log";
             this.chk_Log.UseVisualStyleBackColor = true;
@@ -128,7 +128,7 @@
             this.chk_Disassemble.Location = new System.Drawing.Point(265, 34);
             this.chk_Disassemble.Margin = new System.Windows.Forms.Padding(4);
             this.chk_Disassemble.Name = "chk_Disassemble";
-            this.chk_Disassemble.Size = new System.Drawing.Size(109, 20);
+            this.chk_Disassemble.Size = new System.Drawing.Size(110, 21);
             this.chk_Disassemble.TabIndex = 6;
             this.chk_Disassemble.Text = "Disassemble";
             this.chk_Disassemble.UseVisualStyleBackColor = true;
@@ -150,7 +150,7 @@
             this.chk_Overwrite.Location = new System.Drawing.Point(403, 34);
             this.chk_Overwrite.Margin = new System.Windows.Forms.Padding(4);
             this.chk_Overwrite.Name = "chk_Overwrite";
-            this.chk_Overwrite.Size = new System.Drawing.Size(85, 20);
+            this.chk_Overwrite.Size = new System.Drawing.Size(90, 21);
             this.chk_Overwrite.TabIndex = 8;
             this.chk_Overwrite.Text = "Overwrite";
             this.tpOverwrite.SetToolTip(this.chk_Overwrite, "Removes excess extension names when compiling, replacing if neccesary. Will close" +
@@ -170,7 +170,7 @@
             this.chk_SumBits.Location = new System.Drawing.Point(265, 63);
             this.chk_SumBits.Margin = new System.Windows.Forms.Padding(4);
             this.chk_SumBits.Name = "chk_SumBits";
-            this.chk_SumBits.Size = new System.Drawing.Size(81, 20);
+            this.chk_SumBits.Size = new System.Drawing.Size(85, 21);
             this.chk_SumBits.TabIndex = 9;
             this.chk_SumBits.Text = "Sum Bits";
             this.tpOverwrite.SetToolTip(this.chk_SumBits, "Removes excess extension names when compiling, replacing if neccesary. Will close" +
@@ -182,7 +182,7 @@
             this.lbl_BitFlag.AutoSize = true;
             this.lbl_BitFlag.Location = new System.Drawing.Point(13, 272);
             this.lbl_BitFlag.Name = "lbl_BitFlag";
-            this.lbl_BitFlag.Size = new System.Drawing.Size(110, 16);
+            this.lbl_BitFlag.Size = new System.Drawing.Size(117, 17);
             this.lbl_BitFlag.TabIndex = 19;
             this.lbl_BitFlag.Text = "BitFlag Converter";
             // 
@@ -191,7 +191,7 @@
             this.lbl_Vanilla.AutoSize = true;
             this.lbl_Vanilla.Location = new System.Drawing.Point(13, 297);
             this.lbl_Vanilla.Name = "lbl_Vanilla";
-            this.lbl_Vanilla.Size = new System.Drawing.Size(48, 16);
+            this.lbl_Vanilla.Size = new System.Drawing.Size(50, 17);
             this.lbl_Vanilla.TabIndex = 18;
             this.lbl_Vanilla.Text = "Vanilla";
             // 
@@ -200,7 +200,7 @@
             this.lbl_Royal.AutoSize = true;
             this.lbl_Royal.Location = new System.Drawing.Point(465, 297);
             this.lbl_Royal.Name = "lbl_Royal";
-            this.lbl_Royal.Size = new System.Drawing.Size(43, 16);
+            this.lbl_Royal.Size = new System.Drawing.Size(44, 17);
             this.lbl_Royal.TabIndex = 17;
             this.lbl_Royal.Text = "Royal";
             // 
@@ -257,7 +257,7 @@
             this.MinimumSize = new System.Drawing.Size(537, 371);
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "AtlusScriptCompiler GUI v2.2";
+            this.Text = "AtlusScriptCompiler GUI";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
