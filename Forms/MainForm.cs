@@ -11,18 +11,43 @@ namespace AtlusScriptGUI
     public partial class MainForm : MetroSetForm
     {
         public static Version version = new Version(3, 0);
-        public static string CompilerPath = "AtlusScriptCompiler.exe";
+        public Config settings = new Config();
 
         public MainForm(string[] args)
         {
             InitializeComponent();
+            settings = settings.LoadJson();
+            if (!settings.DarkMode)
+                Theme.ThemeStyle = MetroSet_UI.Enums.Style.Light;
             Theme.ApplyToForm(this);
-            //MenuStripHelper.SetMenuStripIcons(MenuStripHelper.GetMenuStripIconPairs("Icons.txt"), this);
+            MenuStripHelper.SetMenuStripIcons(MenuStripHelper.GetMenuStripIconPairs("Icons.txt"), this);
+
+            ApplyCheckboxStates();
             SetCompilerPath(args);
             SetGamesDropDown();
             SetLogging();
             
             this.Text += $" v{version.Major}.{version.Minor}";
+        }
+
+        private void ApplyCheckboxStates()
+        {
+            chk_DeleteHeader.Checked = settings.DeleteHeader;
+            chk_Disassemble.Checked = settings.Disassemble;
+            chk_Hook.Checked = settings.Hook;
+            chk_Overwrite.Checked = settings.Overwrite;
+            chk_SumBits.Checked = settings.SumBits;
+
+            EnableCheckboxes();
+        }
+
+        private void EnableCheckboxes()
+        {
+            chk_DeleteHeader.Enabled = true;
+            chk_Disassemble.Enabled = true;
+            chk_Hook.Enabled = true;
+            chk_Overwrite.Enabled = true;
+            chk_SumBits.Enabled = true;
         }
 
         private void SetLogging()
@@ -34,7 +59,7 @@ namespace AtlusScriptGUI
         private void SetCompilerPath(string[] args)
         {
             if (args.Length > 0 && File.Exists(args[0]))
-                CompilerPath = args[0];
+                settings.CompilerPath = args[0];
         }
 
         private void SetGamesDropDown()
@@ -42,9 +67,7 @@ namespace AtlusScriptGUI
             foreach (var game in GamesList)
                 comboBox_Game.Items.Add(game);
 
-            comboBox_Game.SelectedIndex = 10;
-            if (File.Exists("Game.txt"))
-                try { comboBox_Game.SelectedIndex = GamesList.IndexOf(File.ReadAllLines("Game.txt")[0]); } catch { }
+            comboBox_Game.SelectedIndex = comboBox_Game.Items.IndexOf(settings.Game);
         }
 
         private void Btn_Click(object sender, EventArgs e)
@@ -57,10 +80,7 @@ namespace AtlusScriptGUI
                 browseWindowTitle = "Choose .BMD/.BF to Decompile";
 
             var files = WinFormsDialogs.SelectFile(browseWindowTitle, true);
-            new Thread(() =>
-            {
-                Compile(files.ToArray(), decompile);
-            }).Start();
+            Compile(files.ToArray(), decompile);
         }
 
         private void Btn_DragDrop(object sender, DragEventArgs e)
@@ -68,15 +88,12 @@ namespace AtlusScriptGUI
             var btn = (Button)sender;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            new Thread(() =>
-            {
-                if (File.Exists(CompilerPath))
-                    Compile(fileList, btn.Name.Contains("Decompile"));
-                else
-                    MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
-                        "Put this program in the same folder and try running it again!",
-                        "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }).Start();
+            if (File.Exists(settings.CompilerPath))
+                Compile(fileList, btn.Name.Contains("Decompile"));
+            else
+                MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
+                    "Put this program in the same folder and try running it again!",
+                    "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             
         }
 
@@ -92,8 +109,8 @@ namespace AtlusScriptGUI
 
         private void Game_Changed(object sender, EventArgs e)
         {
-            if (comboBox_Game.SelectedIndex != 0)
-                File.WriteAllText("Game.txt", comboBox_Game.SelectedItem.ToString());
+            settings.Game = comboBox_Game.SelectedItem.ToString();
+            settings.SaveJson(settings);
         }
 
         private void VanillaText_Changed(object sender, EventArgs e)
@@ -126,6 +143,21 @@ namespace AtlusScriptGUI
             {
                 txtBox_Vanilla.Text = "Out of Range";
             }
+        }
+
+        private void Check_Changed(object sender, EventArgs e)
+        {
+            var item = (ToolStripMenuItem)sender;
+            if (!item.Enabled)
+                return;
+
+            settings.DeleteHeader = chk_DeleteHeader.Checked;
+            settings.Disassemble = chk_Disassemble.Checked;
+            settings.Hook = chk_Hook.Checked;
+            settings.Overwrite = chk_Overwrite.Checked;
+            settings.SumBits = chk_SumBits.Checked;
+
+            settings.SaveJson(settings);
         }
     }
 }

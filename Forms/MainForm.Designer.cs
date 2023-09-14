@@ -195,39 +195,49 @@ namespace AtlusScriptGUI
             this.chk_Hook.Checked = true;
             this.chk_Hook.CheckOnClick = true;
             this.chk_Hook.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_Hook.Enabled = false;
             this.chk_Hook.Name = "chk_Hook";
-            this.chk_Hook.Size = new System.Drawing.Size(198, 26);
+            this.chk_Hook.Size = new System.Drawing.Size(224, 26);
             this.chk_Hook.Text = "Enable Hooking";
+            this.chk_Hook.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
             // chk_Disassemble
             // 
             this.chk_Disassemble.CheckOnClick = true;
+            this.chk_Disassemble.Enabled = false;
             this.chk_Disassemble.Name = "chk_Disassemble";
-            this.chk_Disassemble.Size = new System.Drawing.Size(198, 26);
+            this.chk_Disassemble.Size = new System.Drawing.Size(224, 26);
             this.chk_Disassemble.Text = "Disassemble";
+            this.chk_Disassemble.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
             // chk_Overwrite
             // 
             this.chk_Overwrite.CheckOnClick = true;
+            this.chk_Overwrite.Enabled = false;
             this.chk_Overwrite.Name = "chk_Overwrite";
-            this.chk_Overwrite.Size = new System.Drawing.Size(198, 26);
+            this.chk_Overwrite.Size = new System.Drawing.Size(224, 26);
             this.chk_Overwrite.Text = "Overwrite";
+            this.chk_Overwrite.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
             // chk_SumBits
             // 
             this.chk_SumBits.Checked = true;
             this.chk_SumBits.CheckOnClick = true;
             this.chk_SumBits.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_SumBits.Enabled = false;
             this.chk_SumBits.Name = "chk_SumBits";
-            this.chk_SumBits.Size = new System.Drawing.Size(198, 26);
+            this.chk_SumBits.Size = new System.Drawing.Size(224, 26);
             this.chk_SumBits.Text = "Sum Bits";
+            this.chk_SumBits.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
             // chk_DeleteHeader
             // 
             this.chk_DeleteHeader.CheckOnClick = true;
+            this.chk_DeleteHeader.Enabled = false;
             this.chk_DeleteHeader.Name = "chk_DeleteHeader";
-            this.chk_DeleteHeader.Size = new System.Drawing.Size(198, 26);
+            this.chk_DeleteHeader.Size = new System.Drawing.Size(224, 26);
             this.chk_DeleteHeader.Text = "Delete .h";
+            this.chk_DeleteHeader.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
             // openLogToolStripMenuItem
             // 

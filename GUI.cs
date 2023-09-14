@@ -46,8 +46,10 @@ namespace AtlusScriptGUI
                     args = GetArguments(fileList[i], ext, "-Decompile ");
                 else
                     return;
-
-                Exe.Run(CompilerPath, args, redirectStdOut: true);
+                new Thread(() =>
+                {
+                    Exe.Run(settings.CompilerPath, args, redirectStdOut: true);
+                }).Start();
             }
             DeleteHeaderFiles(fileList);
         }
@@ -208,9 +210,9 @@ namespace AtlusScriptGUI
             return Flag.ConvertToRoyal(Convert.ToInt32(text)).ToString();
         }
 
-        public static void OpenLog()
+        public void OpenLog()
         {
-            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(CompilerPath)), "AtlusScriptCompiler.log");
+            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.CompilerPath)), "AtlusScriptCompiler.log");
             if (File.Exists(logPath))
             {
                 ProcessStartInfo start = new ProcessStartInfo();
@@ -229,9 +231,16 @@ namespace AtlusScriptGUI
         private void ToggleTheme()
         {
             if (Theme.ThemeStyle == MetroSet_UI.Enums.Style.Light)
+            {
                 Theme.ThemeStyle = MetroSet_UI.Enums.Style.Dark;
+                settings.DarkMode = true;
+            }
             else
+            {
                 Theme.ThemeStyle = MetroSet_UI.Enums.Style.Light;
+                settings.DarkMode = false;
+            }
+            settings.SaveJson(settings);
         }
 
         private void ApplyTheme()
