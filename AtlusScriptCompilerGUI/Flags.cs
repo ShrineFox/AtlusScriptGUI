@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AtlusScriptCompilerGUI
+namespace AtlusScriptGUI
 {
     // Adapted from Lipsum
     public class Flag

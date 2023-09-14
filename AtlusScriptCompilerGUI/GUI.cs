@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MetroSet_UI.Forms;
+using ShrineFox.IO;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,18 +12,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AtlusScriptCompilerGUI
+namespace AtlusScriptGUI
 {
-    public partial class GUI
+    public partial class MainForm : MetroSetForm
     {
-        public static bool Hook { get; set; }
-        public static bool Disassemble { get; set; }
-        public static bool Overwrite { get; set; }
-        public static bool Log { get; set; }
-        public static bool SumBits { get; set; }
-        public static int Selection { get; set; }
-
-        public static List<string> GamesDropdown = new List<string>()
+        public static List<string> GamesList = new List<string>()
         {
             "SMT 3 Nocturne",
             "SMT Digital Devil Saga",
@@ -33,72 +28,35 @@ namespace AtlusScriptCompilerGUI
             "Persona 4 Golden",
             "Persona 5",
             "Persona 5 Royal",
-            "Persona 5 Royal - EU",
+            "Persona 5 Royal (EFIGS)",
             "Persona Q2",
         };
 
-        public static FileStream WaitForFile(string fullPath, FileMode mode, FileAccess access, FileShare share)
+        public void Compile(string[] fileList, bool decompile = false)
         {
-            for (int numTries = 0; numTries < 10; numTries++)
-            {
-                FileStream fs = null;
-                try
-                {
-                    fs = new FileStream(fullPath, mode, access, share);
-                    return fs;
-                }
-                catch (IOException)
-                {
-                    if (fs != null)
-                    {
-                        fs.Dispose();
-                    }
-                    Thread.Sleep(1000);
-                }
-            }
-            return null;
-        }
-
-        public static void Compile(string[] fileList)
-        {
-            bool firstFile = true;
-            ArrayList args = new ArrayList();
+            string args = "";
             for (int i = 0; i < fileList.Count(); i++)
             {
                 string ext = Path.GetExtension(fileList[i]).ToUpper();
-                if (ext == ".MSG" || ext == ".FLOW")
-                {
-                    args.Add(GetArgument(fileList[i], ext, "-Compile ", firstFile));
-                    firstFile = false;
-                }
-            }
 
-            RunCMD(args);
+                if (!decompile && (ext == ".MSG" || ext == ".FLOW"))
+                    args = GetArguments(fileList[i], ext, "-Compile ");
+                else if (decompile && ext == ".BMD" || ext == ".BF")
+                    args = GetArguments(fileList[i], ext, "-Decompile ");
+                else
+                    return;
+
+                Exe.Run("cmd", args.ToString(), redirectStdOut: true);
+            }
         }
 
-        public static void Decompile(string[] fileList)
-        {
-            bool firstFile = true;
-            ArrayList args = new ArrayList();
-            for (int i = 0; i < fileList.Count(); i++)
-            {
-                string ext = Path.GetExtension(fileList[i]).ToUpper();
-                if (ext == ".BMD" || ext == ".BF")
-                {
-                    args.Add(GetArgument(fileList[i], ext, "-Decompile ", firstFile));
-                    firstFile = false;
-                }
-            }
-            RunCMD(args);
-        }
-
-        private static string GetArgument(string droppedFilePath, string extension, string compileArg, bool firstFile)
+        private string GetArguments(string droppedFilePath, string extension, string compileArg)
         {
             string encodingArg = "";
             string libraryArg = "";
             string outFormatArg = "";
 
-            switch (Selection)
+            switch (comboBox_Game.SelectedIndex)
             {
                 case 0: //SMT3
                     encodingArg = "-Encoding P3";
@@ -168,12 +126,12 @@ namespace AtlusScriptCompilerGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 10: //P5REU
+                case 10: //P5R_EFIGS
                     encodingArg = "-Encoding P5R_EFIGS";
                     if (extension != ".BMD")
                         libraryArg = "-Library P5R";
                     if (extension == ".MSG")
-                        outFormatArg = "-OutFormat V1"; //V1 = Persona 5 PS4 Output
+                        outFormatArg = "-OutFormat V1BE"; //V1 = Persona 5 PS4 Output
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
@@ -188,11 +146,9 @@ namespace AtlusScriptCompilerGUI
             }
 
             StringBuilder args = new StringBuilder();
-            if (firstFile)
-                args.Append("/C ");
-            args.Append("AtlusScriptCompiler.exe ");
+            args.Append($"\"{CompilerPath}\" ");
             args.Append($"\"{droppedFilePath}\" ");
-            if (Disassemble) //Omits all args if you are disassembling
+            if (chk_Disassemble.Checked) //Omits all args if you are disassembling
                 args.Append($" -Disassemble");
             else
             {
@@ -200,11 +156,11 @@ namespace AtlusScriptCompilerGUI
                 args.Append($"{outFormatArg} ");
                 args.Append($"{libraryArg} ");
                 args.Append($"{encodingArg} ");
-                if (Hook)
+                if (chk_Hook.Checked)
                     args.Append(" -Hook ");
-                if (SumBits)
+                if (chk_SumBits.Checked)
                     args.Append(" -SumBits ");
-                if (compileArg == "-Compile " && Overwrite)
+                if (compileArg == "-Compile " && chk_Overwrite.Checked)
                 {
                     string outPath = droppedFilePath.Replace(".flow", "")
                         .Replace(".FLOW", "").Replace(".msg", "").Replace(".MSG", "")
@@ -230,47 +186,35 @@ namespace AtlusScriptCompilerGUI
             return Flag.ConvertToRoyal(Convert.ToInt32(text)).ToString();
         }
 
-        private static void RunCMD(ArrayList args)
-        {
-            new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                ProcessStartInfo start = new ProcessStartInfo();
-                start.FileName = "cmd";
-                start.UseShellExecute = true;
-                start.RedirectStandardOutput = false;
-
-                StringBuilder cmdInput = new StringBuilder();
-                for (int i = 0; i < args.Count; i++)
-                {
-                    if (i > 0)
-                        cmdInput.Append(" && ");
-                    cmdInput.Append(args[i]);
-                }
-                if (Overwrite)
-                    cmdInput.Append(" && EXIT");
-                start.Arguments = cmdInput.ToString();
-                //Whether or not to show log while compiling
-                if (!Log)
-                    start.WindowStyle = ProcessWindowStyle.Hidden;
-                else
-                    start.Arguments = start.Arguments.Replace("/C", "/K");
-
-                using (Process process = Process.Start(start))
-                {
-                }
-            }).Start();
-        }
-
         public static void OpenLog()
         {
-            if (File.Exists("AtlusScriptCompiler.log"))
+            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(CompilerPath)), "AtlusScriptCompiler.log");
+            if (File.Exists(logPath))
             {
                 ProcessStartInfo start = new ProcessStartInfo();
-                start.FileName = "AtlusScriptCompiler.log";
+                start.FileName = logPath;
                 start.UseShellExecute = true;
                 Process.Start(start);
             }
+        }
+
+        private void ToggleTheme_Click(object sender, EventArgs e)
+        {
+            ToggleTheme();
+            ApplyTheme();
+        }
+
+        private void ToggleTheme()
+        {
+            if (Theme.ThemeStyle == MetroSet_UI.Enums.Style.Light)
+                Theme.ThemeStyle = MetroSet_UI.Enums.Style.Dark;
+            else
+                Theme.ThemeStyle = MetroSet_UI.Enums.Style.Light;
+        }
+
+        private void ApplyTheme()
+        {
+            Theme.ApplyToForm(this);
         }
     }
 }

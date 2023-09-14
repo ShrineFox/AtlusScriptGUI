@@ -1,92 +1,100 @@
-﻿using AtlusScriptCompilerGUI;
+﻿using AtlusScriptGUI;
+using MetroSet_UI.Forms;
+using ShrineFox.IO;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Security.Permissions;
 using System.Windows.Forms;
 
-namespace AtlusScriptCompilerGUIFrontend
+namespace AtlusScriptGUI
 {
-    public partial class MainForm : Form
+    public partial class MainForm : MetroSetForm
     {
-        public static Version version = new Version(2, 3);
+        public static Version version = new Version(3, 0);
+        public static string CompilerPath = "AtlusScriptCompiler.exe";
 
-        public MainForm()
+        public MainForm(string[] args)
         {
             InitializeComponent();
-            Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            comboGame.DataSource = GUI.GamesDropdown;
-            if (File.Exists("Game.txt"))
-                try { comboGame.SelectedIndex = GUI.GamesDropdown.IndexOf(File.ReadAllLines("Game.txt")[0]); } catch { }
+            Theme.ApplyToForm(this);
+            SetCompilerPath(args);
+            SetGamesDropDown();
+            SetLogging();
+            
             this.Text += $" v{version.Major}.{version.Minor}";
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void SetLogging()
         {
-
+            Output.Logging = true;
+            Output.LogControl = rtb_Log;
         }
 
-        private void DecompileDragDrop(object sender, DragEventArgs e)
+        private void SetCompilerPath(string[] args)
         {
-            GUI.Hook = chk_Hook.Checked;
-            GUI.Log = chk_Log.Checked;
-            GUI.Disassemble = chk_Disassemble.Checked;
-            GUI.Selection = comboGame.SelectedIndex;
-            GUI.SumBits = chk_SumBits.Checked;
-
-            string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (File.Exists("AtlusScriptCompiler.exe"))
-                GUI.Decompile(fileList);
-            else
-                MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
-                    "Put this program in the same folder and try running it again!", 
-                    "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            if (args.Length > 0 && File.Exists(args[0]))
+                CompilerPath = args[0];
         }
 
-        private void CompileDragDrop(object sender, DragEventArgs e)
+        private void SetGamesDropDown()
         {
-            GUI.Hook = chk_Hook.Checked;
-            GUI.Log = chk_Log.Checked;
-            GUI.Disassemble = chk_Disassemble.Checked;
-            GUI.Selection = comboGame.SelectedIndex;
-            GUI.Overwrite = chk_Overwrite.Checked;
-            GUI.SumBits = chk_SumBits.Checked;
+            foreach (var game in GamesList)
+                comboBox_Game.Items.Add(game);
+
+            comboBox_Game.SelectedIndex = 10;
+            if (File.Exists("Game.txt"))
+                try { comboBox_Game.SelectedIndex = GamesList.IndexOf(File.ReadAllLines("Game.txt")[0]); } catch { }
+        }
+
+        private void Btn_Click(object sender, EventArgs e)
+        {
+            var btn = (Button)sender;
+            bool decompile = btn.Name.Contains("Decompile");
+
+            string browseWindowTitle = "Choose .MSG/.FLOW to Compile";
+            if (decompile)
+                browseWindowTitle = "Choose .BMD/.BF to Decompile";
+
+            var files = WinFormsDialogs.SelectFile(browseWindowTitle, true);
+            Compile(files.ToArray(), decompile);
+        }
+
+        private void Btn_DragDrop(object sender, DragEventArgs e)
+        {
+            var btn = (Button)sender;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (File.Exists("AtlusScriptCompiler.exe"))
-                GUI.Compile(fileList);
+            if (File.Exists(CompilerPath))
+                Compile(fileList, btn.Name.Contains("Decompile"));
             else
                 MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
                     "Put this program in the same folder and try running it again!",
                     "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
 
-        private void DecompileDragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.Move;
-        }
-
-        private void CompileDragEnter(object sender, DragEventArgs e)
+        private void Btn_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
         }
 
         private void OpenLog_Click(object sender, EventArgs e)
         {
-            GUI.OpenLog();
+            OpenLog();
         }
 
         private void Game_Changed(object sender, EventArgs e)
         {
-            if (comboGame.SelectedIndex != 0)
-                File.WriteAllText("Game.txt", comboGame.SelectedItem.ToString());
+            if (comboBox_Game.SelectedIndex != 0)
+                File.WriteAllText("Game.txt", comboBox_Game.SelectedItem.ToString());
         }
 
         private void VanillaText_Changed(object sender, EventArgs e)
         {
             try
             {
-                string result = GUI.ConvertVanillaFlag(txtBox_Vanilla.Text);
+                string result = ConvertVanillaFlag(txtBox_Vanilla.Text);
                 if (result != "-1")
                     txtBox_Royal.Text = result;
                 else
@@ -102,7 +110,7 @@ namespace AtlusScriptCompilerGUIFrontend
         {
             try
             {
-                string result = GUI.ConvertRoyalFlag(txtBox_Royal.Text);
+                string result = ConvertRoyalFlag(txtBox_Royal.Text);
                 if (result != "-1")
                     txtBox_Vanilla.Text = result;
                 else

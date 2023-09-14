@@ -1,6 +1,8 @@
-﻿namespace AtlusScriptCompilerGUIFrontend
+﻿using MetroSet_UI.Forms;
+
+namespace AtlusScriptGUI
 {
-    partial class MainForm
+    partial class MainForm : MetroSetForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,235 +32,319 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.btnCompile = new System.Windows.Forms.Button();
-            this.btnDecompile = new System.Windows.Forms.Button();
-            this.comboGame = new System.Windows.Forms.ComboBox();
-            this.labelGame = new System.Windows.Forms.Label();
-            this.chk_Hook = new System.Windows.Forms.CheckBox();
-            this.chk_Log = new System.Windows.Forms.CheckBox();
-            this.chk_Disassemble = new System.Windows.Forms.CheckBox();
-            this.btnOpenLog = new System.Windows.Forms.Button();
-            this.chk_Overwrite = new System.Windows.Forms.CheckBox();
+            this.btn_Decompile = new System.Windows.Forms.Button();
+            this.btn_Compile = new System.Windows.Forms.Button();
             this.tpOverwrite = new System.Windows.Forms.ToolTip(this.components);
-            this.chk_SumBits = new System.Windows.Forms.CheckBox();
-            this.lbl_BitFlag = new System.Windows.Forms.Label();
             this.lbl_Vanilla = new System.Windows.Forms.Label();
             this.lbl_Royal = new System.Windows.Forms.Label();
             this.txtBox_Royal = new System.Windows.Forms.TextBox();
             this.txtBox_Vanilla = new System.Windows.Forms.TextBox();
             this.btn_Convert = new System.Windows.Forms.Button();
+            this.menuStrip_Main = new System.Windows.Forms.MenuStrip();
+            this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboBox_Game = new System.Windows.Forms.ToolStripComboBox();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chk_Hook = new System.Windows.Forms.ToolStripMenuItem();
+            this.chk_Disassemble = new System.Windows.Forms.ToolStripMenuItem();
+            this.chk_Overwrite = new System.Windows.Forms.ToolStripMenuItem();
+            this.chk_SumBits = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tlp_Main = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox_BitFlagConverter = new System.Windows.Forms.GroupBox();
+            this.tlp_BitFlagConverter = new System.Windows.Forms.TableLayoutPanel();
+            this.splitContainer_Log = new System.Windows.Forms.SplitContainer();
+            this.rtb_Log = new System.Windows.Forms.RichTextBox();
+            this.menuStrip_Main.SuspendLayout();
+            this.tlp_Main.SuspendLayout();
+            this.groupBox_BitFlagConverter.SuspendLayout();
+            this.tlp_BitFlagConverter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer_Log)).BeginInit();
+            this.splitContainer_Log.Panel1.SuspendLayout();
+            this.splitContainer_Log.Panel2.SuspendLayout();
+            this.splitContainer_Log.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnCompile
+            // btn_Decompile
             // 
-            this.btnCompile.AllowDrop = true;
-            this.btnCompile.Location = new System.Drawing.Point(16, 95);
-            this.btnCompile.Margin = new System.Windows.Forms.Padding(4);
-            this.btnCompile.Name = "btnCompile";
-            this.btnCompile.Size = new System.Drawing.Size(240, 173);
-            this.btnCompile.TabIndex = 0;
-            this.btnCompile.Text = "Drag a .BF or .BMD\r\nto Decompile\r\n";
-            this.btnCompile.UseVisualStyleBackColor = true;
-            this.btnCompile.DragDrop += new System.Windows.Forms.DragEventHandler(this.DecompileDragDrop);
-            this.btnCompile.DragEnter += new System.Windows.Forms.DragEventHandler(this.DecompileDragEnter);
+            this.btn_Decompile.AllowDrop = true;
+            this.btn_Decompile.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_Decompile.Location = new System.Drawing.Point(4, 4);
+            this.btn_Decompile.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Decompile.Name = "btn_Decompile";
+            this.btn_Decompile.Size = new System.Drawing.Size(231, 106);
+            this.btn_Decompile.TabIndex = 0;
+            this.btn_Decompile.Text = "Drag a .BF or .BMD\r\nto Decompile\r\n";
+            this.btn_Decompile.UseVisualStyleBackColor = true;
+            this.btn_Decompile.Click += new System.EventHandler(this.Btn_Click);
+            this.btn_Decompile.DragDrop += new System.Windows.Forms.DragEventHandler(this.Btn_DragDrop);
+            this.btn_Decompile.DragEnter += new System.Windows.Forms.DragEventHandler(this.Btn_DragEnter);
             // 
-            // btnDecompile
+            // btn_Compile
             // 
-            this.btnDecompile.AllowDrop = true;
-            this.btnDecompile.Location = new System.Drawing.Point(265, 95);
-            this.btnDecompile.Margin = new System.Windows.Forms.Padding(4);
-            this.btnDecompile.Name = "btnDecompile";
-            this.btnDecompile.Size = new System.Drawing.Size(240, 173);
-            this.btnDecompile.TabIndex = 1;
-            this.btnDecompile.Text = "Drag a .FLOW or .MSG \r\nto Compile\r\n";
-            this.btnDecompile.UseVisualStyleBackColor = true;
-            this.btnDecompile.DragDrop += new System.Windows.Forms.DragEventHandler(this.CompileDragDrop);
-            this.btnDecompile.DragEnter += new System.Windows.Forms.DragEventHandler(this.CompileDragEnter);
-            // 
-            // comboGame
-            // 
-            this.comboGame.FormattingEnabled = true;
-            this.comboGame.Location = new System.Drawing.Point(95, 6);
-            this.comboGame.Margin = new System.Windows.Forms.Padding(4);
-            this.comboGame.MaxDropDownItems = 3;
-            this.comboGame.Name = "comboGame";
-            this.comboGame.Size = new System.Drawing.Size(160, 24);
-            this.comboGame.TabIndex = 2;
-            this.comboGame.SelectionChangeCommitted += new System.EventHandler(this.Game_Changed);
-            // 
-            // labelGame
-            // 
-            this.labelGame.AutoSize = true;
-            this.labelGame.Location = new System.Drawing.Point(36, 10);
-            this.labelGame.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelGame.Name = "labelGame";
-            this.labelGame.Size = new System.Drawing.Size(50, 17);
-            this.labelGame.TabIndex = 3;
-            this.labelGame.Text = "Game:";
-            // 
-            // chk_Hook
-            // 
-            this.chk_Hook.AutoSize = true;
-            this.chk_Hook.Checked = true;
-            this.chk_Hook.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chk_Hook.Location = new System.Drawing.Point(265, 5);
-            this.chk_Hook.Margin = new System.Windows.Forms.Padding(4);
-            this.chk_Hook.Name = "chk_Hook";
-            this.chk_Hook.Size = new System.Drawing.Size(130, 21);
-            this.chk_Hook.TabIndex = 4;
-            this.chk_Hook.Text = "Enable Hooking";
-            this.chk_Hook.UseVisualStyleBackColor = true;
-            // 
-            // chk_Log
-            // 
-            this.chk_Log.AutoSize = true;
-            this.chk_Log.Checked = true;
-            this.chk_Log.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chk_Log.Location = new System.Drawing.Point(403, 5);
-            this.chk_Log.Margin = new System.Windows.Forms.Padding(4);
-            this.chk_Log.Name = "chk_Log";
-            this.chk_Log.Size = new System.Drawing.Size(92, 21);
-            this.chk_Log.TabIndex = 5;
-            this.chk_Log.Text = "Show Log";
-            this.chk_Log.UseVisualStyleBackColor = true;
-            // 
-            // chk_Disassemble
-            // 
-            this.chk_Disassemble.AutoSize = true;
-            this.chk_Disassemble.Location = new System.Drawing.Point(265, 34);
-            this.chk_Disassemble.Margin = new System.Windows.Forms.Padding(4);
-            this.chk_Disassemble.Name = "chk_Disassemble";
-            this.chk_Disassemble.Size = new System.Drawing.Size(110, 21);
-            this.chk_Disassemble.TabIndex = 6;
-            this.chk_Disassemble.Text = "Disassemble";
-            this.chk_Disassemble.UseVisualStyleBackColor = true;
-            // 
-            // btnOpenLog
-            // 
-            this.btnOpenLog.Location = new System.Drawing.Point(95, 34);
-            this.btnOpenLog.Margin = new System.Windows.Forms.Padding(4);
-            this.btnOpenLog.Name = "btnOpenLog";
-            this.btnOpenLog.Size = new System.Drawing.Size(163, 28);
-            this.btnOpenLog.TabIndex = 7;
-            this.btnOpenLog.Text = "Open Log";
-            this.btnOpenLog.UseVisualStyleBackColor = true;
-            this.btnOpenLog.Click += new System.EventHandler(this.OpenLog_Click);
-            // 
-            // chk_Overwrite
-            // 
-            this.chk_Overwrite.AutoSize = true;
-            this.chk_Overwrite.Location = new System.Drawing.Point(403, 34);
-            this.chk_Overwrite.Margin = new System.Windows.Forms.Padding(4);
-            this.chk_Overwrite.Name = "chk_Overwrite";
-            this.chk_Overwrite.Size = new System.Drawing.Size(90, 21);
-            this.chk_Overwrite.TabIndex = 8;
-            this.chk_Overwrite.Text = "Overwrite";
-            this.tpOverwrite.SetToolTip(this.chk_Overwrite, "Removes excess extension names when compiling, replacing if neccesary. Will close" +
-        " the log.");
-            this.chk_Overwrite.UseVisualStyleBackColor = true;
+            this.btn_Compile.AllowDrop = true;
+            this.btn_Compile.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_Compile.Location = new System.Drawing.Point(243, 4);
+            this.btn_Compile.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Compile.Name = "btn_Compile";
+            this.btn_Compile.Size = new System.Drawing.Size(231, 106);
+            this.btn_Compile.TabIndex = 1;
+            this.btn_Compile.Text = "Drag a .FLOW or .MSG \r\nto Compile\r\n";
+            this.btn_Compile.UseVisualStyleBackColor = true;
+            this.btn_Compile.Click += new System.EventHandler(this.Btn_Click);
+            this.btn_Compile.DragDrop += new System.Windows.Forms.DragEventHandler(this.Btn_DragDrop);
+            this.btn_Compile.DragEnter += new System.Windows.Forms.DragEventHandler(this.Btn_DragEnter);
             // 
             // tpOverwrite
             // 
             this.tpOverwrite.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.tpOverwrite.ToolTipTitle = "Info";
             // 
-            // chk_SumBits
-            // 
-            this.chk_SumBits.AutoSize = true;
-            this.chk_SumBits.Checked = true;
-            this.chk_SumBits.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chk_SumBits.Location = new System.Drawing.Point(265, 63);
-            this.chk_SumBits.Margin = new System.Windows.Forms.Padding(4);
-            this.chk_SumBits.Name = "chk_SumBits";
-            this.chk_SumBits.Size = new System.Drawing.Size(85, 21);
-            this.chk_SumBits.TabIndex = 9;
-            this.chk_SumBits.Text = "Sum Bits";
-            this.tpOverwrite.SetToolTip(this.chk_SumBits, "Removes excess extension names when compiling, replacing if neccesary. Will close" +
-        " the log.");
-            this.chk_SumBits.UseVisualStyleBackColor = true;
-            // 
-            // lbl_BitFlag
-            // 
-            this.lbl_BitFlag.AutoSize = true;
-            this.lbl_BitFlag.Location = new System.Drawing.Point(13, 272);
-            this.lbl_BitFlag.Name = "lbl_BitFlag";
-            this.lbl_BitFlag.Size = new System.Drawing.Size(117, 17);
-            this.lbl_BitFlag.TabIndex = 19;
-            this.lbl_BitFlag.Text = "BitFlag Converter";
-            // 
             // lbl_Vanilla
             // 
+            this.lbl_Vanilla.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lbl_Vanilla.AutoSize = true;
-            this.lbl_Vanilla.Location = new System.Drawing.Point(13, 297);
+            this.lbl_Vanilla.Location = new System.Drawing.Point(63, 40);
             this.lbl_Vanilla.Name = "lbl_Vanilla";
-            this.lbl_Vanilla.Size = new System.Drawing.Size(50, 17);
+            this.lbl_Vanilla.Size = new System.Drawing.Size(59, 20);
             this.lbl_Vanilla.TabIndex = 18;
             this.lbl_Vanilla.Text = "Vanilla";
             // 
             // lbl_Royal
             // 
+            this.lbl_Royal.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lbl_Royal.AutoSize = true;
-            this.lbl_Royal.Location = new System.Drawing.Point(465, 297);
+            this.lbl_Royal.Location = new System.Drawing.Point(347, 40);
             this.lbl_Royal.Name = "lbl_Royal";
-            this.lbl_Royal.Size = new System.Drawing.Size(44, 17);
+            this.lbl_Royal.Size = new System.Drawing.Size(51, 20);
             this.lbl_Royal.TabIndex = 17;
             this.lbl_Royal.Text = "Royal";
             // 
             // txtBox_Royal
             // 
-            this.txtBox_Royal.Location = new System.Drawing.Point(312, 294);
+            this.txtBox_Royal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBox_Royal.Location = new System.Drawing.Point(282, 7);
             this.txtBox_Royal.Name = "txtBox_Royal";
-            this.txtBox_Royal.Size = new System.Drawing.Size(148, 22);
+            this.txtBox_Royal.Size = new System.Drawing.Size(181, 26);
             this.txtBox_Royal.TabIndex = 16;
             this.txtBox_Royal.Leave += new System.EventHandler(this.RoyalText_Changed);
             // 
             // txtBox_Vanilla
             // 
-            this.txtBox_Vanilla.Location = new System.Drawing.Point(67, 294);
+            this.txtBox_Vanilla.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBox_Vanilla.Location = new System.Drawing.Point(3, 7);
             this.txtBox_Vanilla.Name = "txtBox_Vanilla";
-            this.txtBox_Vanilla.Size = new System.Drawing.Size(158, 22);
+            this.txtBox_Vanilla.Size = new System.Drawing.Size(180, 26);
             this.txtBox_Vanilla.TabIndex = 15;
             this.txtBox_Vanilla.Leave += new System.EventHandler(this.VanillaText_Changed);
             // 
             // btn_Convert
             // 
-            this.btn_Convert.Location = new System.Drawing.Point(231, 293);
+            this.btn_Convert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Convert.Location = new System.Drawing.Point(189, 8);
             this.btn_Convert.Name = "btn_Convert";
-            this.btn_Convert.Size = new System.Drawing.Size(75, 23);
+            this.btn_Convert.Size = new System.Drawing.Size(87, 23);
             this.btn_Convert.TabIndex = 20;
             this.btn_Convert.Text = "<=>";
             this.btn_Convert.UseVisualStyleBackColor = true;
             // 
+            // menuStrip_Main
+            // 
+            this.menuStrip_Main.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.gameToolStripMenuItem,
+            this.optionsToolStripMenuItem,
+            this.openLogToolStripMenuItem,
+            this.toggleThemeToolStripMenuItem});
+            this.menuStrip_Main.Location = new System.Drawing.Point(2, 0);
+            this.menuStrip_Main.Name = "menuStrip_Main";
+            this.menuStrip_Main.Size = new System.Drawing.Size(478, 28);
+            this.menuStrip_Main.TabIndex = 21;
+            this.menuStrip_Main.Text = "menuStrip1";
+            // 
+            // gameToolStripMenuItem
+            // 
+            this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.comboBox_Game});
+            this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
+            this.gameToolStripMenuItem.Size = new System.Drawing.Size(62, 24);
+            this.gameToolStripMenuItem.Text = "Game";
+            // 
+            // comboBox_Game
+            // 
+            this.comboBox_Game.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Game.Name = "comboBox_Game";
+            this.comboBox_Game.Size = new System.Drawing.Size(230, 28);
+            this.comboBox_Game.SelectedIndexChanged += new System.EventHandler(this.Game_Changed);
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.chk_Hook,
+            this.chk_Disassemble,
+            this.chk_Overwrite,
+            this.chk_SumBits});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(75, 24);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // chk_Hook
+            // 
+            this.chk_Hook.Checked = true;
+            this.chk_Hook.CheckOnClick = true;
+            this.chk_Hook.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_Hook.Name = "chk_Hook";
+            this.chk_Hook.Size = new System.Drawing.Size(224, 26);
+            this.chk_Hook.Text = "Enable Hooking";
+            // 
+            // chk_Disassemble
+            // 
+            this.chk_Disassemble.CheckOnClick = true;
+            this.chk_Disassemble.Name = "chk_Disassemble";
+            this.chk_Disassemble.Size = new System.Drawing.Size(224, 26);
+            this.chk_Disassemble.Text = "Disassemble";
+            // 
+            // chk_Overwrite
+            // 
+            this.chk_Overwrite.CheckOnClick = true;
+            this.chk_Overwrite.Name = "chk_Overwrite";
+            this.chk_Overwrite.Size = new System.Drawing.Size(224, 26);
+            this.chk_Overwrite.Text = "Overwrite";
+            // 
+            // chk_SumBits
+            // 
+            this.chk_SumBits.Checked = true;
+            this.chk_SumBits.CheckOnClick = true;
+            this.chk_SumBits.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_SumBits.Name = "chk_SumBits";
+            this.chk_SumBits.Size = new System.Drawing.Size(224, 26);
+            this.chk_SumBits.Text = "Sum Bits";
+            // 
+            // openLogToolStripMenuItem
+            // 
+            this.openLogToolStripMenuItem.Name = "openLogToolStripMenuItem";
+            this.openLogToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
+            this.openLogToolStripMenuItem.Text = "Open Log";
+            this.openLogToolStripMenuItem.Click += new System.EventHandler(this.OpenLog_Click);
+            // 
+            // toggleThemeToolStripMenuItem
+            // 
+            this.toggleThemeToolStripMenuItem.Name = "toggleThemeToolStripMenuItem";
+            this.toggleThemeToolStripMenuItem.Size = new System.Drawing.Size(118, 24);
+            this.toggleThemeToolStripMenuItem.Text = "Toggle Theme";
+            this.toggleThemeToolStripMenuItem.Click += new System.EventHandler(this.ToggleTheme_Click);
+            // 
+            // tlp_Main
+            // 
+            this.tlp_Main.ColumnCount = 2;
+            this.tlp_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlp_Main.Controls.Add(this.btn_Decompile, 0, 0);
+            this.tlp_Main.Controls.Add(this.btn_Compile, 1, 0);
+            this.tlp_Main.Controls.Add(this.splitContainer_Log, 0, 1);
+            this.tlp_Main.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_Main.Location = new System.Drawing.Point(2, 28);
+            this.tlp_Main.Name = "tlp_Main";
+            this.tlp_Main.RowCount = 2;
+            this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tlp_Main.Size = new System.Drawing.Size(478, 382);
+            this.tlp_Main.TabIndex = 22;
+            // 
+            // groupBox_BitFlagConverter
+            // 
+            this.groupBox_BitFlagConverter.Controls.Add(this.tlp_BitFlagConverter);
+            this.groupBox_BitFlagConverter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox_BitFlagConverter.Location = new System.Drawing.Point(0, 0);
+            this.groupBox_BitFlagConverter.Name = "groupBox_BitFlagConverter";
+            this.groupBox_BitFlagConverter.Size = new System.Drawing.Size(472, 100);
+            this.groupBox_BitFlagConverter.TabIndex = 24;
+            this.groupBox_BitFlagConverter.TabStop = false;
+            this.groupBox_BitFlagConverter.Text = "BitFlag Converter";
+            // 
+            // tlp_BitFlagConverter
+            // 
+            this.tlp_BitFlagConverter.ColumnCount = 3;
+            this.tlp_BitFlagConverter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tlp_BitFlagConverter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tlp_BitFlagConverter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tlp_BitFlagConverter.Controls.Add(this.txtBox_Vanilla, 0, 0);
+            this.tlp_BitFlagConverter.Controls.Add(this.lbl_Vanilla, 0, 1);
+            this.tlp_BitFlagConverter.Controls.Add(this.btn_Convert, 1, 0);
+            this.tlp_BitFlagConverter.Controls.Add(this.txtBox_Royal, 2, 0);
+            this.tlp_BitFlagConverter.Controls.Add(this.lbl_Royal, 2, 1);
+            this.tlp_BitFlagConverter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_BitFlagConverter.Location = new System.Drawing.Point(3, 22);
+            this.tlp_BitFlagConverter.Name = "tlp_BitFlagConverter";
+            this.tlp_BitFlagConverter.RowCount = 3;
+            this.tlp_BitFlagConverter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlp_BitFlagConverter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tlp_BitFlagConverter.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlp_BitFlagConverter.Size = new System.Drawing.Size(466, 75);
+            this.tlp_BitFlagConverter.TabIndex = 23;
+            // 
+            // splitContainer_Log
+            // 
+            this.tlp_Main.SetColumnSpan(this.splitContainer_Log, 2);
+            this.splitContainer_Log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer_Log.Location = new System.Drawing.Point(3, 117);
+            this.splitContainer_Log.Name = "splitContainer_Log";
+            this.splitContainer_Log.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer_Log.Panel1
+            // 
+            this.splitContainer_Log.Panel1.Controls.Add(this.groupBox_BitFlagConverter);
+            // 
+            // splitContainer_Log.Panel2
+            // 
+            this.splitContainer_Log.Panel2.Controls.Add(this.rtb_Log);
+            this.splitContainer_Log.Size = new System.Drawing.Size(472, 262);
+            this.splitContainer_Log.SplitterDistance = 100;
+            this.splitContainer_Log.TabIndex = 25;
+            // 
+            // rtb_Log
+            // 
+            this.rtb_Log.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtb_Log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtb_Log.Location = new System.Drawing.Point(0, 0);
+            this.rtb_Log.Name = "rtb_Log";
+            this.rtb_Log.Size = new System.Drawing.Size(472, 158);
+            this.rtb_Log.TabIndex = 0;
+            this.rtb_Log.Text = "";
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(519, 324);
-            this.Controls.Add(this.btn_Convert);
-            this.Controls.Add(this.lbl_BitFlag);
-            this.Controls.Add(this.lbl_Vanilla);
-            this.Controls.Add(this.lbl_Royal);
-            this.Controls.Add(this.txtBox_Royal);
-            this.Controls.Add(this.txtBox_Vanilla);
-            this.Controls.Add(this.chk_SumBits);
-            this.Controls.Add(this.chk_Overwrite);
-            this.Controls.Add(this.btnOpenLog);
-            this.Controls.Add(this.chk_Disassemble);
-            this.Controls.Add(this.chk_Log);
-            this.Controls.Add(this.chk_Hook);
-            this.Controls.Add(this.labelGame);
-            this.Controls.Add(this.comboGame);
-            this.Controls.Add(this.btnDecompile);
-            this.Controls.Add(this.btnCompile);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(482, 412);
+            this.Controls.Add(this.tlp_Main);
+            this.Controls.Add(this.menuStrip_Main);
+            this.DropShadowEffect = false;
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            this.HeaderHeight = -40;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip_Main;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximumSize = new System.Drawing.Size(537, 371);
-            this.MinimumSize = new System.Drawing.Size(537, 371);
+            this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "MainForm";
+            this.Opacity = 0.99D;
+            this.Padding = new System.Windows.Forms.Padding(2, 0, 2, 2);
+            this.ShowHeader = true;
+            this.ShowLeftRect = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "AtlusScriptCompiler GUI";
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Text = "AtlusScriptGUI";
+            this.TextColor = System.Drawing.Color.White;
+            this.menuStrip_Main.ResumeLayout(false);
+            this.menuStrip_Main.PerformLayout();
+            this.tlp_Main.ResumeLayout(false);
+            this.groupBox_BitFlagConverter.ResumeLayout(false);
+            this.tlp_BitFlagConverter.ResumeLayout(false);
+            this.tlp_BitFlagConverter.PerformLayout();
+            this.splitContainer_Log.Panel1.ResumeLayout(false);
+            this.splitContainer_Log.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer_Log)).EndInit();
+            this.splitContainer_Log.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,23 +352,29 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnCompile;
-        private System.Windows.Forms.Button btnDecompile;
-        private System.Windows.Forms.ComboBox comboGame;
-        private System.Windows.Forms.Label labelGame;
-        private System.Windows.Forms.CheckBox chk_Hook;
-        private System.Windows.Forms.CheckBox chk_Log;
-        private System.Windows.Forms.CheckBox chk_Disassemble;
-        private System.Windows.Forms.CheckBox chk_Overwrite;
+        private System.Windows.Forms.Button btn_Decompile;
+        private System.Windows.Forms.Button btn_Compile;
         public System.Windows.Forms.ToolTip tpOverwrite;
-        public System.Windows.Forms.Button btnOpenLog;
-        private System.Windows.Forms.CheckBox chk_SumBits;
-        private System.Windows.Forms.Label lbl_BitFlag;
         private System.Windows.Forms.Label lbl_Vanilla;
         private System.Windows.Forms.Label lbl_Royal;
         private System.Windows.Forms.TextBox txtBox_Royal;
         private System.Windows.Forms.TextBox txtBox_Vanilla;
         private System.Windows.Forms.Button btn_Convert;
+        private System.Windows.Forms.MenuStrip menuStrip_Main;
+        private System.Windows.Forms.ToolStripMenuItem gameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chk_Hook;
+        private System.Windows.Forms.ToolStripMenuItem chk_Disassemble;
+        private System.Windows.Forms.ToolStripMenuItem chk_Overwrite;
+        private System.Windows.Forms.ToolStripMenuItem chk_SumBits;
+        private System.Windows.Forms.ToolStripMenuItem openLogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox comboBox_Game;
+        private System.Windows.Forms.ToolStripMenuItem toggleThemeToolStripMenuItem;
+        private System.Windows.Forms.TableLayoutPanel tlp_Main;
+        private System.Windows.Forms.GroupBox groupBox_BitFlagConverter;
+        private System.Windows.Forms.TableLayoutPanel tlp_BitFlagConverter;
+        private System.Windows.Forms.SplitContainer splitContainer_Log;
+        private System.Windows.Forms.RichTextBox rtb_Log;
     }
 }
 
