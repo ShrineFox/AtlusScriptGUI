@@ -48,21 +48,22 @@ namespace AtlusScriptGUI
             this.chk_Disassemble = new System.Windows.Forms.ToolStripMenuItem();
             this.chk_Overwrite = new System.Windows.Forms.ToolStripMenuItem();
             this.chk_SumBits = new System.Windows.Forms.ToolStripMenuItem();
+            this.chk_DeleteHeader = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toggleThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_Main = new System.Windows.Forms.TableLayoutPanel();
+            this.splitContainer_Log = new System.Windows.Forms.SplitContainer();
             this.groupBox_BitFlagConverter = new System.Windows.Forms.GroupBox();
             this.tlp_BitFlagConverter = new System.Windows.Forms.TableLayoutPanel();
-            this.splitContainer_Log = new System.Windows.Forms.SplitContainer();
             this.rtb_Log = new System.Windows.Forms.RichTextBox();
             this.menuStrip_Main.SuspendLayout();
             this.tlp_Main.SuspendLayout();
-            this.groupBox_BitFlagConverter.SuspendLayout();
-            this.tlp_BitFlagConverter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer_Log)).BeginInit();
             this.splitContainer_Log.Panel1.SuspendLayout();
             this.splitContainer_Log.Panel2.SuspendLayout();
             this.splitContainer_Log.SuspendLayout();
+            this.groupBox_BitFlagConverter.SuspendLayout();
+            this.tlp_BitFlagConverter.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Decompile
@@ -183,7 +184,8 @@ namespace AtlusScriptGUI
             this.chk_Hook,
             this.chk_Disassemble,
             this.chk_Overwrite,
-            this.chk_SumBits});
+            this.chk_SumBits,
+            this.chk_DeleteHeader});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(75, 24);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -194,21 +196,21 @@ namespace AtlusScriptGUI
             this.chk_Hook.CheckOnClick = true;
             this.chk_Hook.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_Hook.Name = "chk_Hook";
-            this.chk_Hook.Size = new System.Drawing.Size(224, 26);
+            this.chk_Hook.Size = new System.Drawing.Size(198, 26);
             this.chk_Hook.Text = "Enable Hooking";
             // 
             // chk_Disassemble
             // 
             this.chk_Disassemble.CheckOnClick = true;
             this.chk_Disassemble.Name = "chk_Disassemble";
-            this.chk_Disassemble.Size = new System.Drawing.Size(224, 26);
+            this.chk_Disassemble.Size = new System.Drawing.Size(198, 26);
             this.chk_Disassemble.Text = "Disassemble";
             // 
             // chk_Overwrite
             // 
             this.chk_Overwrite.CheckOnClick = true;
             this.chk_Overwrite.Name = "chk_Overwrite";
-            this.chk_Overwrite.Size = new System.Drawing.Size(224, 26);
+            this.chk_Overwrite.Size = new System.Drawing.Size(198, 26);
             this.chk_Overwrite.Text = "Overwrite";
             // 
             // chk_SumBits
@@ -217,14 +219,22 @@ namespace AtlusScriptGUI
             this.chk_SumBits.CheckOnClick = true;
             this.chk_SumBits.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_SumBits.Name = "chk_SumBits";
-            this.chk_SumBits.Size = new System.Drawing.Size(224, 26);
+            this.chk_SumBits.Size = new System.Drawing.Size(198, 26);
             this.chk_SumBits.Text = "Sum Bits";
+            // 
+            // chk_DeleteHeader
+            // 
+            this.chk_DeleteHeader.CheckOnClick = true;
+            this.chk_DeleteHeader.Name = "chk_DeleteHeader";
+            this.chk_DeleteHeader.Size = new System.Drawing.Size(198, 26);
+            this.chk_DeleteHeader.Text = "Delete .h";
             // 
             // openLogToolStripMenuItem
             // 
             this.openLogToolStripMenuItem.Name = "openLogToolStripMenuItem";
             this.openLogToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
             this.openLogToolStripMenuItem.Text = "Open Log";
+            this.openLogToolStripMenuItem.Visible = false;
             this.openLogToolStripMenuItem.Click += new System.EventHandler(this.OpenLog_Click);
             // 
             // toggleThemeToolStripMenuItem
@@ -250,6 +260,25 @@ namespace AtlusScriptGUI
             this.tlp_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tlp_Main.Size = new System.Drawing.Size(478, 382);
             this.tlp_Main.TabIndex = 22;
+            // 
+            // splitContainer_Log
+            // 
+            this.tlp_Main.SetColumnSpan(this.splitContainer_Log, 2);
+            this.splitContainer_Log.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer_Log.Location = new System.Drawing.Point(3, 117);
+            this.splitContainer_Log.Name = "splitContainer_Log";
+            this.splitContainer_Log.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer_Log.Panel1
+            // 
+            this.splitContainer_Log.Panel1.Controls.Add(this.groupBox_BitFlagConverter);
+            // 
+            // splitContainer_Log.Panel2
+            // 
+            this.splitContainer_Log.Panel2.Controls.Add(this.rtb_Log);
+            this.splitContainer_Log.Size = new System.Drawing.Size(472, 262);
+            this.splitContainer_Log.SplitterDistance = 100;
+            this.splitContainer_Log.TabIndex = 25;
             // 
             // groupBox_BitFlagConverter
             // 
@@ -283,31 +312,13 @@ namespace AtlusScriptGUI
             this.tlp_BitFlagConverter.Size = new System.Drawing.Size(466, 75);
             this.tlp_BitFlagConverter.TabIndex = 23;
             // 
-            // splitContainer_Log
-            // 
-            this.tlp_Main.SetColumnSpan(this.splitContainer_Log, 2);
-            this.splitContainer_Log.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer_Log.Location = new System.Drawing.Point(3, 117);
-            this.splitContainer_Log.Name = "splitContainer_Log";
-            this.splitContainer_Log.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer_Log.Panel1
-            // 
-            this.splitContainer_Log.Panel1.Controls.Add(this.groupBox_BitFlagConverter);
-            // 
-            // splitContainer_Log.Panel2
-            // 
-            this.splitContainer_Log.Panel2.Controls.Add(this.rtb_Log);
-            this.splitContainer_Log.Size = new System.Drawing.Size(472, 262);
-            this.splitContainer_Log.SplitterDistance = 100;
-            this.splitContainer_Log.TabIndex = 25;
-            // 
             // rtb_Log
             // 
-            this.rtb_Log.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rtb_Log.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtb_Log.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtb_Log.Location = new System.Drawing.Point(0, 0);
             this.rtb_Log.Name = "rtb_Log";
+            this.rtb_Log.ReadOnly = true;
             this.rtb_Log.Size = new System.Drawing.Size(472, 158);
             this.rtb_Log.TabIndex = 0;
             this.rtb_Log.Text = "";
@@ -338,13 +349,13 @@ namespace AtlusScriptGUI
             this.menuStrip_Main.ResumeLayout(false);
             this.menuStrip_Main.PerformLayout();
             this.tlp_Main.ResumeLayout(false);
-            this.groupBox_BitFlagConverter.ResumeLayout(false);
-            this.tlp_BitFlagConverter.ResumeLayout(false);
-            this.tlp_BitFlagConverter.PerformLayout();
             this.splitContainer_Log.Panel1.ResumeLayout(false);
             this.splitContainer_Log.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer_Log)).EndInit();
             this.splitContainer_Log.ResumeLayout(false);
+            this.groupBox_BitFlagConverter.ResumeLayout(false);
+            this.tlp_BitFlagConverter.ResumeLayout(false);
+            this.tlp_BitFlagConverter.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -375,6 +386,7 @@ namespace AtlusScriptGUI
         private System.Windows.Forms.TableLayoutPanel tlp_BitFlagConverter;
         private System.Windows.Forms.SplitContainer splitContainer_Log;
         private System.Windows.Forms.RichTextBox rtb_Log;
+        private System.Windows.Forms.ToolStripMenuItem chk_DeleteHeader;
     }
 }
 

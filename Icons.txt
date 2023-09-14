@@ -1,0 +1,3 @@
+gameToolStripMenuItem controller
+optionsToolStripMenuItem cog
+toggleThemeToolStripMenuItem weather_cloudy

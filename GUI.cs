@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -46,7 +47,24 @@ namespace AtlusScriptGUI
                 else
                     return;
 
-                Exe.Run("cmd", args.ToString(), redirectStdOut: true);
+                Exe.Run(CompilerPath, args, redirectStdOut: true);
+            }
+            DeleteHeaderFiles(fileList);
+        }
+
+        private void DeleteHeaderFiles(string[] fileList)
+        {
+            foreach (var file in fileList)
+            {
+                if (chk_DeleteHeader.Checked && Path.GetExtension(file).ToUpper() == ".BMD")
+                {
+                    string headerFile = file + ".msg.h";
+                    if (chk_Overwrite.Checked)
+                        headerFile = FileSys.GetExtensionlessPath(file) + ".msg.h";
+
+                    if (File.Exists(headerFile))
+                        File.Delete(headerFile);
+                }
             }
         }
 
@@ -146,7 +164,6 @@ namespace AtlusScriptGUI
             }
 
             StringBuilder args = new StringBuilder();
-            args.Append($"\"{CompilerPath}\" ");
             args.Append($"\"{droppedFilePath}\" ");
             if (chk_Disassemble.Checked) //Omits all args if you are disassembling
                 args.Append($" -Disassemble");
@@ -170,6 +187,11 @@ namespace AtlusScriptGUI
                         args.Append($"-Out \"{outPath + ".bmd"}\" ");
                     else if (extension == ".FLOW")
                         args.Append($"-Out \"{outPath + ".bf"}\" ");
+                }
+                else if (compileArg == "-Decompile " && chk_Overwrite.Checked)
+                {
+                    string outPath = droppedFilePath.Replace(".bmd", "").Replace(".BMD", "");
+                    args.Append($"-Out \"{outPath + ".msg"}\" ");
                 }
             }
 

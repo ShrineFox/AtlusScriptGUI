@@ -2,10 +2,8 @@
 using MetroSet_UI.Forms;
 using ShrineFox.IO;
 using System;
-using System.Drawing;
 using System.IO;
-using System.Reflection;
-using System.Security.Permissions;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace AtlusScriptGUI
@@ -19,6 +17,7 @@ namespace AtlusScriptGUI
         {
             InitializeComponent();
             Theme.ApplyToForm(this);
+            //MenuStripHelper.SetMenuStripIcons(MenuStripHelper.GetMenuStripIconPairs("Icons.txt"), this);
             SetCompilerPath(args);
             SetGamesDropDown();
             SetLogging();
@@ -58,7 +57,10 @@ namespace AtlusScriptGUI
                 browseWindowTitle = "Choose .BMD/.BF to Decompile";
 
             var files = WinFormsDialogs.SelectFile(browseWindowTitle, true);
-            Compile(files.ToArray(), decompile);
+            new Thread(() =>
+            {
+                Compile(files.ToArray(), decompile);
+            }).Start();
         }
 
         private void Btn_DragDrop(object sender, DragEventArgs e)
@@ -66,12 +68,16 @@ namespace AtlusScriptGUI
             var btn = (Button)sender;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (File.Exists(CompilerPath))
-                Compile(fileList, btn.Name.Contains("Decompile"));
-            else
-                MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
-                    "Put this program in the same folder and try running it again!",
-                    "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            new Thread(() =>
+            {
+                if (File.Exists(CompilerPath))
+                    Compile(fileList, btn.Name.Contains("Decompile"));
+                else
+                    MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
+                        "Put this program in the same folder and try running it again!",
+                        "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }).Start();
+            
         }
 
         private void Btn_DragEnter(object sender, DragEventArgs e)
