@@ -35,23 +35,23 @@ namespace AtlusScriptGUI
 
         public void Compile(string[] fileList, bool decompile = false)
         {
-            string args = "";
-            for (int i = 0; i < fileList.Count(); i++)
+            new Thread(() =>
             {
-                string ext = Path.GetExtension(fileList[i]).ToUpper();
-
-                if (!decompile && (ext == ".MSG" || ext == ".FLOW"))
-                    args = GetArguments(fileList[i], ext, "-Compile ");
-                else if (decompile && ext == ".BMD" || ext == ".BF")
-                    args = GetArguments(fileList[i], ext, "-Decompile ");
-                else
-                    return;
-                new Thread(() =>
+                string args = "";
+                for (int i = 0; i < fileList.Count(); i++)
                 {
-                    Exe.Run(settings.CompilerPath, args, redirectStdOut: true);
-                }).Start();
-            }
-            DeleteHeaderFiles(fileList);
+                    string ext = Path.GetExtension(fileList[i]).ToUpper();
+
+                    if (!decompile && (ext == ".MSG" || ext == ".FLOW"))
+                        args = GetArguments(fileList[i], ext, "-Compile ");
+                    else if (decompile && ext == ".BMD" || ext == ".BF")
+                        args = GetArguments(fileList[i], ext, "-Decompile ");
+                    else
+                        return;
+                        Exe.Run(settings.CompilerPath, args, redirectStdOut: true);
+                }
+                DeleteHeaderFiles(fileList);
+            }).Start();
         }
 
         private void DeleteHeaderFiles(string[] fileList)
