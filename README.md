@@ -1,5 +1,5 @@
 # AtlusScriptGUI
-![]([https://i.imgur.com/JwYFVhA.png](https://i.imgur.com/UNgxNBR.png))  
+![](https://i.imgur.com/UNgxNBR.png)
 GUI that automatically passes commandline arguments to AtlusScriptCompiler.  
 Also useful for converting bitflag IDs from vanilla to Royal.
 # Usage
