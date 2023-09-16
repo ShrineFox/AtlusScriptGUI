@@ -75,6 +75,9 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Flags.cs" />
+    <Compile Include="Events.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI.cs">
       <SubType>Form</SubType>
     </Compile>

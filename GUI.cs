@@ -61,7 +61,9 @@ namespace AtlusScriptGUI
         private void SetCompilerPath(string[] args)
         {
             if (args.Length > 0 && File.Exists(args[0]))
-                settings.CompilerPath = Path.GetFullPath(args[0]);
+                CompilerPath = Path.GetFullPath(args[0]);
+            else
+                CompilerPath = settings.CompilerPath;
         }
 
         private void SetDropDowns()
@@ -154,7 +156,7 @@ namespace AtlusScriptGUI
                         args = GetArguments(fileList[i], ext, "-Decompile ");
                     else
                         return;
-                        Exe.Run(Path.GetFullPath(settings.CompilerPath), args, redirectStdOut: true);
+                        Exe.Run(Path.GetFullPath(CompilerPath), args, redirectStdOut: true);
                 }
                 DeleteHeaderFiles(fileList);
             }).Start();
@@ -314,7 +316,7 @@ namespace AtlusScriptGUI
 
         public void OpenLog()
         {
-            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.CompilerPath)), "AtlusScriptCompiler.log");
+            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(CompilerPath)), "AtlusScriptCompiler.log");
             if (File.Exists(logPath))
             {
                 ProcessStartInfo start = new ProcessStartInfo();

@@ -13,6 +13,7 @@ namespace AtlusScriptGUI
     {
         public static Version version = new Version(3, 1);
         public Config settings = new Config();
+        public string CompilerPath { get; set; } = "./AtlusScriptCompiler.exe";
 
         public MainForm(string[] args)
         {

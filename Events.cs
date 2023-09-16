@@ -35,11 +35,11 @@ namespace AtlusScriptGUI
             var btn = (Button)sender;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (File.Exists(settings.CompilerPath))
+            if (File.Exists(CompilerPath))
                 Compile(fileList, btn.Name.Contains("Decompile"));
             else
                 MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
-                    "Put this program in the same folder and try running it again!",
+                    "Change the path in Config.json and try running this program again!",
                     "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
         }
