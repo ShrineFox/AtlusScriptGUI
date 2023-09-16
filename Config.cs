@@ -10,7 +10,8 @@ namespace AtlusScriptGUI
 {
     public class Config
     {
-        public string Game { get; set; } = "Persona 5 Royal (EFIGS)";
+        public string Game { get; set; } = "Persona 5 Royal (PC/Switch)";
+        public string Encoding { get; set; } = "P5R_EFIGS";
         public string CompilerPath { get; set; } = "./AtlusScriptCompiler.exe";
         public bool DarkMode { get; set; } = true;
         public bool Hook { get; set; } = true;

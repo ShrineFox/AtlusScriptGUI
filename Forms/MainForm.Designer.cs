@@ -43,6 +43,9 @@ namespace AtlusScriptGUI
             this.menuStrip_Main = new System.Windows.Forms.MenuStrip();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.comboBox_Game = new System.Windows.Forms.ToolStripComboBox();
+            this.encodingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboBox_Encoding = new System.Windows.Forms.ToolStripComboBox();
+            this.defaultEncodingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chk_Hook = new System.Windows.Forms.ToolStripMenuItem();
             this.chk_Disassemble = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,6 +157,7 @@ namespace AtlusScriptGUI
             this.menuStrip_Main.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip_Main.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gameToolStripMenuItem,
+            this.encodingToolStripMenuItem,
             this.optionsToolStripMenuItem,
             this.openLogToolStripMenuItem,
             this.toggleThemeToolStripMenuItem});
@@ -178,6 +182,30 @@ namespace AtlusScriptGUI
             this.comboBox_Game.Size = new System.Drawing.Size(230, 28);
             this.comboBox_Game.SelectedIndexChanged += new System.EventHandler(this.Game_Changed);
             // 
+            // encodingToolStripMenuItem
+            // 
+            this.encodingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.comboBox_Encoding,
+            this.defaultEncodingToolStripMenuItem});
+            this.encodingToolStripMenuItem.Name = "encodingToolStripMenuItem";
+            this.encodingToolStripMenuItem.Size = new System.Drawing.Size(85, 24);
+            this.encodingToolStripMenuItem.Text = "Encoding";
+            // 
+            // comboBox_Encoding
+            // 
+            this.comboBox_Encoding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Encoding.Name = "comboBox_Encoding";
+            this.comboBox_Encoding.Size = new System.Drawing.Size(151, 28);
+            this.comboBox_Encoding.SelectedIndexChanged += new System.EventHandler(this.Encoding_Changed);
+            // 
+            // defaultEncodingToolStripMenuItem
+            // 
+            this.defaultEncodingToolStripMenuItem.Enabled = false;
+            this.defaultEncodingToolStripMenuItem.Name = "defaultEncodingToolStripMenuItem";
+            this.defaultEncodingToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this.defaultEncodingToolStripMenuItem.Text = "Default Encoding";
+            this.defaultEncodingToolStripMenuItem.Visible = false;
+            // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -197,7 +225,7 @@ namespace AtlusScriptGUI
             this.chk_Hook.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_Hook.Enabled = false;
             this.chk_Hook.Name = "chk_Hook";
-            this.chk_Hook.Size = new System.Drawing.Size(224, 26);
+            this.chk_Hook.Size = new System.Drawing.Size(198, 26);
             this.chk_Hook.Text = "Enable Hooking";
             this.chk_Hook.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -206,7 +234,7 @@ namespace AtlusScriptGUI
             this.chk_Disassemble.CheckOnClick = true;
             this.chk_Disassemble.Enabled = false;
             this.chk_Disassemble.Name = "chk_Disassemble";
-            this.chk_Disassemble.Size = new System.Drawing.Size(224, 26);
+            this.chk_Disassemble.Size = new System.Drawing.Size(198, 26);
             this.chk_Disassemble.Text = "Disassemble";
             this.chk_Disassemble.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -215,7 +243,7 @@ namespace AtlusScriptGUI
             this.chk_Overwrite.CheckOnClick = true;
             this.chk_Overwrite.Enabled = false;
             this.chk_Overwrite.Name = "chk_Overwrite";
-            this.chk_Overwrite.Size = new System.Drawing.Size(224, 26);
+            this.chk_Overwrite.Size = new System.Drawing.Size(198, 26);
             this.chk_Overwrite.Text = "Overwrite";
             this.chk_Overwrite.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -226,7 +254,7 @@ namespace AtlusScriptGUI
             this.chk_SumBits.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_SumBits.Enabled = false;
             this.chk_SumBits.Name = "chk_SumBits";
-            this.chk_SumBits.Size = new System.Drawing.Size(224, 26);
+            this.chk_SumBits.Size = new System.Drawing.Size(198, 26);
             this.chk_SumBits.Text = "Sum Bits";
             this.chk_SumBits.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -235,7 +263,7 @@ namespace AtlusScriptGUI
             this.chk_DeleteHeader.CheckOnClick = true;
             this.chk_DeleteHeader.Enabled = false;
             this.chk_DeleteHeader.Name = "chk_DeleteHeader";
-            this.chk_DeleteHeader.Size = new System.Drawing.Size(224, 26);
+            this.chk_DeleteHeader.Size = new System.Drawing.Size(198, 26);
             this.chk_DeleteHeader.Text = "Delete .h";
             this.chk_DeleteHeader.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -397,6 +425,9 @@ namespace AtlusScriptGUI
         private System.Windows.Forms.SplitContainer splitContainer_Log;
         private System.Windows.Forms.RichTextBox rtb_Log;
         private System.Windows.Forms.ToolStripMenuItem chk_DeleteHeader;
+        private System.Windows.Forms.ToolStripMenuItem encodingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripComboBox comboBox_Encoding;
+        private System.Windows.Forms.ToolStripMenuItem defaultEncodingToolStripMenuItem;
     }
 }
 

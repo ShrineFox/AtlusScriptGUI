@@ -22,16 +22,122 @@ namespace AtlusScriptGUI
             "SMT 3 Nocturne",
             "SMT Digital Devil Saga",
             "Persona 3 Portable",
-            "Persona 3 Portable - EU",
             "Persona 3",
             "Persona 3 FES",
             "Persona 4",
             "Persona 4 Golden",
             "Persona 5",
-            "Persona 5 Royal",
-            "Persona 5 Royal (EFIGS)",
+            "Persona 5 Royal (PS4)",
+            "Persona 5 Royal (PC/Switch)",
             "Persona Q2",
         };
+
+        private void ApplyCheckboxStates()
+        {
+            chk_DeleteHeader.Checked = settings.DeleteHeader;
+            chk_Disassemble.Checked = settings.Disassemble;
+            chk_Hook.Checked = settings.Hook;
+            chk_Overwrite.Checked = settings.Overwrite;
+            chk_SumBits.Checked = settings.SumBits;
+
+            EnableCheckboxes();
+        }
+
+        private void EnableCheckboxes()
+        {
+            chk_DeleteHeader.Enabled = true;
+            chk_Disassemble.Enabled = true;
+            chk_Hook.Enabled = true;
+            chk_Overwrite.Enabled = true;
+            chk_SumBits.Enabled = true;
+        }
+
+        private void SetLogging()
+        {
+            Output.Logging = true;
+            Output.LogControl = rtb_Log;
+        }
+
+        private void SetCompilerPath(string[] args)
+        {
+            if (args.Length > 0 && File.Exists(args[0]))
+                settings.CompilerPath = Path.GetFullPath(args[0]);
+        }
+
+        private void SetDropDowns()
+        {
+            SetGameDropDown();
+
+            SetEncodingDropDown();
+        }
+
+        private void SetGameDropDown()
+        {
+            foreach (var game in GamesList)
+                comboBox_Game.Items.Add(game);
+
+            comboBox_Game.SelectedIndex = comboBox_Game.Items.IndexOf(settings.Game);
+        }
+
+        private void SetEncodingDropDown()
+        {
+            comboBox_Encoding.Enabled = false;
+            comboBox_Encoding.Items.Clear();
+
+            // Hide encoding options and display text saying default option will be used
+            comboBox_Encoding.Visible = false;
+            defaultEncodingToolStripMenuItem.Visible = true;
+
+            // Show encoding dropdown if there are optional encodings, select commonly used default
+            switch (settings.Game)
+            {
+                case "Persona 3 Portable":
+                    foreach (var encoding in new string[] { "P3", "P3P_EFIGS" })
+                        comboBox_Encoding.Items.Add(encoding);
+                    comboBox_Encoding.SelectedIndex = 0;
+                    comboBox_Encoding.Visible = true;
+                    defaultEncodingToolStripMenuItem.Visible = false;
+                    break;
+                case "Persona 5":
+                    // Populate comboBox options with all available AtlusEncodings
+                    foreach (var encoding in new string[] { "P5", "P5_Chinese" })
+                        comboBox_Encoding.Items.Add(encoding);
+                    comboBox_Encoding.SelectedIndex = comboBox_Encoding.Items.IndexOf("P5");
+                    comboBox_Encoding.Visible = true;
+                    defaultEncodingToolStripMenuItem.Visible = false;
+                    break;
+                case "Persona 5 Royal (PS4)":
+                    foreach (var encoding in new string[] { "P5", "P5_Chinese" })
+                        comboBox_Encoding.Items.Add(encoding);
+                    comboBox_Encoding.SelectedIndex = 0;
+                    comboBox_Encoding.Visible = true;
+                    defaultEncodingToolStripMenuItem.Visible = false;
+                    break;
+                case "Persona 5 Royal (PC/Switch)":
+                    // Populate comboBox options with all available AtlusEncodings
+                    foreach (var encoding in new string[] { "P5R_EFIGS", "P5R_Japanese", "P5R_Chinese" })
+                        comboBox_Encoding.Items.Add(encoding);
+                    comboBox_Encoding.SelectedIndex = comboBox_Encoding.Items.IndexOf("P5R_EFIGS");
+                    comboBox_Encoding.Visible = true;
+                    defaultEncodingToolStripMenuItem.Visible = false;
+                    break;
+                default:
+                    comboBox_Encoding.Items.Add("P3");
+                    comboBox_Encoding.SelectedIndex = 0;
+                    break;
+            }
+
+            // Select previous setting if it's still in the list
+            foreach (var item in comboBox_Encoding.Items)
+                if (item.ToString() == settings.Encoding)
+                    comboBox_Encoding.SelectedIndex = comboBox_Encoding.Items.IndexOf(item);
+
+            comboBox_Encoding.Enabled = true;
+
+            // Save selected encoding to config
+            settings.Encoding = comboBox_Encoding.SelectedItem.ToString();
+            settings.SaveJson(settings);
+        }
 
         public void Compile(string[] fileList, bool decompile = false)
         {
@@ -76,6 +182,8 @@ namespace AtlusScriptGUI
             string libraryArg = "";
             string outFormatArg = "";
 
+            encodingArg = settings.Encoding;
+
             switch (comboBox_Game.SelectedIndex)
             {
                 case 0: //SMT3
@@ -95,67 +203,61 @@ namespace AtlusScriptGUI
                         outFormatArg = "-OutFormat V1DDS";
                     break;
                 case 2: //P3P
-                    encodingArg = "-Encoding P3";
+                    //encodingArg = "-Encoding P3";
                     libraryArg = "-Library P3P";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 3: //P3P_EFIGS
-                    encodingArg = "-Encoding P3P_EFIGS";
-                    libraryArg = "-Library P3P";
-                    if (extension == ".MSG" || extension == ".FLOW")
-                        outFormatArg = "-OutFormat V1";
-                    break;
-                case 4: //P3
+                case 3: //P3
                     encodingArg = "-Encoding P3";
                     libraryArg = "-Library P3";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 5: //P3FES
+                case 4: //P3FES
                     encodingArg = "-Encoding P3";
                     libraryArg = "-Library P3F";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 6: //P4
+                case 5: //P4
                     encodingArg = "-Encoding P4";
                     libraryArg = "-Library P4";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 7: //P4G
+                case 6: //P4G
                     encodingArg = "-Encoding P4";
                     libraryArg = "-Library P4G";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 8: //P5
-                    encodingArg = "-Encoding P5";
+                case 7: //P5
+                    //encodingArg = "-Encoding P5";
                     libraryArg = "-Library P5";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1BE";
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 9: //P5R
-                    encodingArg = "-Encoding P5";
+                case 8: //P5R PS4
+                    //encodingArg = "-Encoding P5";
                     libraryArg = "-Library P5R";
+                    if (extension == ".MSG")
+                        outFormatArg = "-OutFormat V1";
+                    if (extension == ".FLOW")
+                        outFormatArg = "-OutFormat V3BE";
+                    break;
+                case 9: //P5R PC/Switch
+                    //encodingArg = "-Encoding P5R_EFIGS";
+                    if (extension != ".BMD")
+                        libraryArg = "-Library P5R";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1BE";
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 10: //P5R_EFIGS
-                    encodingArg = "-Encoding P5R_EFIGS";
-                    if (extension != ".BMD")
-                        libraryArg = "-Library P5R";
-                    if (extension == ".MSG")
-                        outFormatArg = "-OutFormat V1BE"; //V1 = Persona 5 PS4 Output
-                    if (extension == ".FLOW")
-                        outFormatArg = "-OutFormat V3BE";
-                    break;
-                case 11: //PQ2
+                case 10: //PQ2
                     encodingArg = "-Encoding SJ";
                     libraryArg = "-Library PQ2";
                     if (extension == ".MSG")
@@ -220,12 +322,6 @@ namespace AtlusScriptGUI
                 start.UseShellExecute = true;
                 Process.Start(start);
             }
-        }
-
-        private void ToggleTheme_Click(object sender, EventArgs e)
-        {
-            ToggleTheme();
-            ApplyTheme();
         }
 
         private void ToggleTheme()
