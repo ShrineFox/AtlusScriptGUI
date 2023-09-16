@@ -48,7 +48,7 @@ namespace AtlusScriptGUI
                         args = GetArguments(fileList[i], ext, "-Decompile ");
                     else
                         return;
-                        Exe.Run(settings.CompilerPath, args, redirectStdOut: true);
+                        Exe.Run(Path.GetFullPath(settings.CompilerPath), args, redirectStdOut: true);
                 }
                 DeleteHeaderFiles(fileList);
             }).Start();

@@ -59,7 +59,7 @@ namespace AtlusScriptGUI
         private void SetCompilerPath(string[] args)
         {
             if (args.Length > 0 && File.Exists(args[0]))
-                settings.CompilerPath = args[0];
+                settings.CompilerPath = Path.GetFullPath(args[0]);
         }
 
         private void SetGamesDropDown()
