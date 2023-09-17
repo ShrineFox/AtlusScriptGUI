@@ -143,6 +143,7 @@ namespace AtlusScriptGUI
 
         public void Compile(string[] fileList, bool decompile = false)
         {
+            rtb_Log.Clear();
             new Thread(() =>
             {
                 string args = "";
@@ -184,11 +185,11 @@ namespace AtlusScriptGUI
             string libraryArg = "";
             string outFormatArg = "";
 
-            encodingArg = settings.Encoding;
+            encodingArg = $"-Encoding {settings.Encoding}";
 
-            switch (comboBox_Game.SelectedIndex)
+            switch (settings.Game)
             {
-                case 0: //SMT3
+                case "SMT 3 Nocturne":
                     encodingArg = "-Encoding P3";
                     libraryArg = "-Library SMT3";
                     if (extension == ".MSG")
@@ -196,7 +197,7 @@ namespace AtlusScriptGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 1: //DDS
+                case "SMT Digital Devil Saga":
                     encodingArg = "-Encoding P3";
                     libraryArg = "-Library DDS";
                     if (extension == ".MSG")
@@ -204,37 +205,37 @@ namespace AtlusScriptGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V1DDS";
                     break;
-                case 2: //P3P
+                case "Persona 3 Portable":
                     //encodingArg = "-Encoding P3";
                     libraryArg = "-Library P3P";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 3: //P3
+                case "Persona 3":
                     encodingArg = "-Encoding P3";
                     libraryArg = "-Library P3";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 4: //P3FES
+                case "Persona 3 FES":
                     encodingArg = "-Encoding P3";
                     libraryArg = "-Library P3F";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 5: //P4
+                case "Persona 4":
                     encodingArg = "-Encoding P4";
                     libraryArg = "-Library P4";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 6: //P4G
+                case "Persona 4 Golden":
                     encodingArg = "-Encoding P4";
                     libraryArg = "-Library P4G";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
                     break;
-                case 7: //P5
+                case "Persona 5":
                     //encodingArg = "-Encoding P5";
                     libraryArg = "-Library P5";
                     if (extension == ".MSG")
@@ -242,7 +243,7 @@ namespace AtlusScriptGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 8: //P5R PS4
+                case "Persona 5 Royal (PS4)":
                     //encodingArg = "-Encoding P5";
                     libraryArg = "-Library P5R";
                     if (extension == ".MSG")
@@ -250,7 +251,7 @@ namespace AtlusScriptGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 9: //P5R PC/Switch
+                case "Persona 5 Royal (PC/Switch)":
                     //encodingArg = "-Encoding P5R_EFIGS";
                     if (extension != ".BMD")
                         libraryArg = "-Library P5R";
@@ -259,7 +260,7 @@ namespace AtlusScriptGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V3BE";
                     break;
-                case 10: //PQ2
+                case "Persona Q2":
                     encodingArg = "-Encoding SJ";
                     libraryArg = "-Library PQ2";
                     if (extension == ".MSG")
@@ -267,11 +268,13 @@ namespace AtlusScriptGUI
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V2";
                     break;
+                default:
+                    break;
             }
 
             StringBuilder args = new StringBuilder();
             args.Append($"\"{droppedFilePath}\" ");
-            if (chk_Disassemble.Checked) //Omits all args if you are disassembling
+            if (settings.Disassemble) //Omits all args if you are disassembling
                 args.Append($" -Disassemble");
             else
             {
@@ -279,11 +282,11 @@ namespace AtlusScriptGUI
                 args.Append($"{outFormatArg} ");
                 args.Append($"{libraryArg} ");
                 args.Append($"{encodingArg} ");
-                if (chk_Hook.Checked)
+                if (settings.Hook)
                     args.Append(" -Hook ");
-                if (chk_SumBits.Checked)
+                if (settings.SumBits)
                     args.Append(" -SumBits ");
-                if (compileArg == "-Compile " && chk_Overwrite.Checked)
+                if (compileArg == "-Compile " && settings.Overwrite)
                 {
                     string outPath = droppedFilePath.Replace(".flow", "")
                         .Replace(".FLOW", "").Replace(".msg", "").Replace(".MSG", "")
@@ -294,13 +297,14 @@ namespace AtlusScriptGUI
                     else if (extension == ".FLOW")
                         args.Append($"-Out \"{outPath + ".bf"}\" ");
                 }
-                else if (compileArg == "-Decompile " && chk_Overwrite.Checked)
+                else if (compileArg == "-Decompile " && settings.Overwrite)
                 {
                     string outPath = droppedFilePath.Replace(".bmd", "").Replace(".BMD", "");
                     args.Append($"-Out \"{outPath + ".msg"}\" ");
                 }
             }
 
+            Output.Log(args.ToString(), ConsoleColor.Green);
             return args.ToString();
         }
 
