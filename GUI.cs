@@ -253,7 +253,7 @@ namespace AtlusScriptGUI
                     break;
                 case "Persona 5 Royal (PC/Switch)":
                     //encodingArg = "-Encoding P5R_EFIGS";
-                    if (extension != ".BMD")
+                    //if (extension != ".BMD")
                         libraryArg = "-Library P5R";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1BE";
