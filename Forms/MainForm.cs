@@ -11,7 +11,7 @@ namespace AtlusScriptGUI
 {
     public partial class MainForm : MetroSetForm
     {
-        public static Version version = new Version(3, 1);
+        public static Version version = new Version(3, 2);
         public Config settings = new Config();
         public string CompilerPath { get; set; } = "./AtlusScriptCompiler.exe";
 
