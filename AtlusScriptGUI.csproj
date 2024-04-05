@@ -112,6 +112,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Atlus-Script-Tools\Source\AtlusScriptLibrary\AtlusScriptLibrary.csproj">
+      <Project>{62ee486f-ae33-4dbb-ac4c-409a22cb04ad}</Project>
+      <Name>AtlusScriptLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ShrineFox.IO\ShrineFox.IO.csproj">
       <Project>{7640412a-7372-4925-b20c-0178d8818a8f}</Project>
       <Name>ShrineFox.IO</Name>

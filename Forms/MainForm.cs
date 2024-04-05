@@ -3,6 +3,7 @@ using MetroSet_UI.Forms;
 using ShrineFox.IO;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -11,7 +12,7 @@ namespace AtlusScriptGUI
 {
     public partial class MainForm : MetroSetForm
     {
-        public static Version version = new Version(3, 2);
+        public static Version version = new Version(3, 3);
         public Config settings = new Config();
         public string CompilerPath { get; set; } = "./AtlusScriptCompiler.exe";
 
@@ -31,5 +32,6 @@ namespace AtlusScriptGUI
             
             this.Text += $" v{version.Major}.{version.Minor}";
         }
+
     }
 }

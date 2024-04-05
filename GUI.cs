@@ -64,6 +64,17 @@ namespace AtlusScriptGUI
                 CompilerPath = Path.GetFullPath(args[0]);
             else
                 CompilerPath = settings.CompilerPath;
+
+            while (!File.Exists(CompilerPath))
+            {
+                var fileSelect = WinFormsDialogs.SelectFile("Select your AtlusScriptCompiler.exe", false, new string[] { "Executable File (.exe)" });
+                if (fileSelect.Count > 0 && File.Exists(fileSelect.First()))
+                {
+                    CompilerPath = fileSelect.First();
+                    settings.CompilerPath = CompilerPath;
+                    settings.SaveJson(settings);
+                }
+            }
         }
 
         private void SetDropDowns()
@@ -300,7 +311,10 @@ namespace AtlusScriptGUI
                 else if (compileArg == "-Decompile " && settings.Overwrite)
                 {
                     string outPath = droppedFilePath.Replace(".bmd", "").Replace(".BMD", "");
-                    args.Append($"-Out \"{outPath + ".msg"}\" ");
+                    if (extension == ".BF")
+                        args.Append($"-Out \"{outPath + ".flow"}\" ");
+                    else if (extension == ".BMD")
+                        args.Append($"-Out \"{outPath + ".msg"}\" ");
                 }
             }
 

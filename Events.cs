@@ -1,4 +1,10 @@
-﻿using MetroSet_UI.Forms;
+﻿using AtlusScriptLibrary.Common.Libraries;
+using AtlusScriptLibrary.Common.Logging;
+using AtlusScriptLibrary.Common.Text.Encodings;
+using AtlusScriptLibrary.FlowScriptLanguage;
+using AtlusScriptLibrary.MessageScriptLanguage.Compiler;
+using AtlusScriptLibrary.MessageScriptLanguage;
+using MetroSet_UI.Forms;
 using ShrineFox.IO;
 using System;
 using System.Collections;
@@ -123,5 +129,42 @@ namespace AtlusScriptGUI
             ToggleTheme();
             ApplyTheme();
         }
+
+        private void InjectMSG_Click(object sender, EventArgs e)
+        {
+            string bfPath = "";
+            string msgPath = "";
+            var bfSelect = ShrineFox.IO.WinFormsDialogs.SelectFile("Choose Original BF File", false, new string[] { "Flowscript Binary (.BF)" });
+            if (bfSelect.Count <= 0 || string.IsNullOrEmpty(bfSelect.First()))
+                return;
+            else
+                bfPath = bfSelect.FirstOrDefault();
+            var msgSelect = ShrineFox.IO.WinFormsDialogs.SelectFile("Choose File To Inject", false, new string[] { "Messagescript Text (.MSG)", "Messagescript Binary (.BMD)" });
+            if (msgSelect.Count <= 0 || string.IsNullOrEmpty(msgSelect.First()))
+                return;
+            else
+                msgPath = msgSelect.FirstOrDefault();
+
+            FlowScript flowScript = FlowScript.FromFile(bfPath, AtlusEncoding.GetByName(comboBox_Encoding.SelectedItem.ToString()));
+            MessageScript messageScript;
+
+            if (Path.GetExtension(msgPath).ToLower() == ".bmd")
+                messageScript = MessageScript.FromFile(msgPath, AtlusScriptLibrary.MessageScriptLanguage.FormatVersion.Version1BigEndian, AtlusEncoding.GetByName(comboBox_Encoding.SelectedItem.ToString()));
+            else
+                using (FileStream fileStream = File.OpenRead(msgPath))
+                {
+                    MessageScriptCompiler messageScriptCompiler = new MessageScriptCompiler(
+                        AtlusScriptLibrary.MessageScriptLanguage.FormatVersion.Version1BigEndian, AtlusEncoding.GetByName(comboBox_Encoding.SelectedItem.ToString()));
+                    messageScriptCompiler.AddListener(new ConsoleLogListener(true, LogLevel.Info | LogLevel.Warning
+                        | LogLevel.Error | LogLevel.Fatal));
+                    messageScriptCompiler.Library = LibraryLookup.GetLibrary("P5R");
+                    if (!messageScriptCompiler.TryCompile(fileStream, out messageScript))
+                        return;
+                }
+            flowScript.MessageScript = messageScript;
+            flowScript.ToFile(bfPath);
+            MessageBox.Show("Done injecting message into .BF!");
+        }
+
     }
 }
