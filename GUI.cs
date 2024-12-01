@@ -282,7 +282,7 @@ namespace AtlusScriptGUI
                         outFormatArg = "-OutFormat V2";
                     break;
                 case "Catherine Classic":
-                    encodingArg = "-Enconding Unicode";
+                    encodingArg = "-Encoding CAT";
                     libraryArg = "-Library CAT";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V2BE";
@@ -290,7 +290,7 @@ namespace AtlusScriptGUI
                         outFormatArg = "-OutFormat V2BE";
                     break;
                 case "Catherine Full-Body":
-                    encodingArg = "-Enconding Unicode";
+                    encodingArg = "-Encoding CFB";
                     libraryArg = "-Library CFB";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V2";
