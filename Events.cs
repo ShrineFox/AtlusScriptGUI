@@ -41,13 +41,12 @@ namespace AtlusScriptGUI
             var btn = (Button)sender;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (File.Exists(CompilerPath))
-                Compile(fileList, btn.Name.Contains("Decompile"));
-            else
-                MessageBox.Show("Could not find AtlusScriptCompiler.exe. " +
-                    "Change the path in Config.json and try running this program again!",
-                    "Critical Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
+            if (!File.Exists(settings.CompilerPath))
+                SetCompilerPath();
+
+            if (File.Exists(settings.CompilerPath))
+                Compile(fileList, btn.Name.Contains("Decompile"));
         }
 
         private void Btn_DragEnter(object sender, DragEventArgs e)
@@ -120,6 +119,7 @@ namespace AtlusScriptGUI
             settings.Hook = chk_Hook.Checked;
             settings.Overwrite = chk_Overwrite.Checked;
             settings.SumBits = chk_SumBits.Checked;
+            settings.BigEndianFlow = chk_BigEndianFlowP3RE.Checked;
 
             settings.SaveJson(settings);
         }
@@ -132,6 +132,9 @@ namespace AtlusScriptGUI
 
         private void InjectMSG_Click(object sender, EventArgs e)
         {
+            if (!File.Exists(settings.CompilerPath) && !SetCompilerPath())
+                return;
+
             string bfPath = "";
             string msgPath = "";
             var bfSelect = ShrineFox.IO.WinFormsDialogs.SelectFile("Choose Original BF File", false, new string[] { "Flowscript Binary (.BF)" });
@@ -145,16 +148,16 @@ namespace AtlusScriptGUI
             else
                 msgPath = msgSelect.FirstOrDefault();
 
-            FlowScript flowScript = FlowScript.FromFile(bfPath, AtlusEncoding.GetByName(comboBox_Encoding.SelectedItem.ToString()));
+            FlowScript flowScript = FlowScript.FromFile(bfPath, GetSelectedEncoding());
             MessageScript messageScript;
 
             if (Path.GetExtension(msgPath).ToLower() == ".bmd")
-                messageScript = MessageScript.FromFile(msgPath, AtlusScriptLibrary.MessageScriptLanguage.FormatVersion.Version1BigEndian, AtlusEncoding.GetByName(comboBox_Encoding.SelectedItem.ToString()));
+                messageScript = MessageScript.FromFile(msgPath, AtlusScriptLibrary.MessageScriptLanguage.FormatVersion.Version1BigEndian, GetSelectedEncoding());
             else
                 using (FileStream fileStream = File.OpenRead(msgPath))
                 {
                     MessageScriptCompiler messageScriptCompiler = new MessageScriptCompiler(
-                        AtlusScriptLibrary.MessageScriptLanguage.FormatVersion.Version1BigEndian, AtlusEncoding.GetByName(comboBox_Encoding.SelectedItem.ToString()));
+                        AtlusScriptLibrary.MessageScriptLanguage.FormatVersion.Version1BigEndian, GetSelectedEncoding());
                     messageScriptCompiler.AddListener(new ConsoleLogListener(true, LogLevel.Info | LogLevel.Warning
                         | LogLevel.Error | LogLevel.Fatal));
                     messageScriptCompiler.Library = LibraryLookup.GetLibrary("P5R");
@@ -166,5 +169,14 @@ namespace AtlusScriptGUI
             MessageBox.Show("Done injecting message into .BF!");
         }
 
+        private void SetScriptCompilerPath_Click(object sender, EventArgs e)
+        {
+            SetCompilerPath();
+        }
+
+        private Encoding GetSelectedEncoding()
+        {
+            return AtlusEncoding.GetEncodings().First(x => x.Name.Equals(comboBox_Encoding.SelectedItem.ToString())).GetEncoding();
+        }
     }
 }
