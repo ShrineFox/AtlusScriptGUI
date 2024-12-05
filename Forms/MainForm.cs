@@ -12,7 +12,7 @@ namespace AtlusScriptGUI
 {
     public partial class MainForm : MetroSetForm
     {
-        public static Version version = new Version(3, 4);
+        public static Version version = new Version(3, 4, 1);
         public Config settings = new Config();
 
         public MainForm(string[] args)
@@ -28,7 +28,7 @@ namespace AtlusScriptGUI
             SetDropDowns();
             SetLogging();
             
-            this.Text += $" v{version.Major}.{version.Minor}";
+            this.Text += $" v{version.Major}.{version.Minor}.{version.Build}";
         }
     }
 }
