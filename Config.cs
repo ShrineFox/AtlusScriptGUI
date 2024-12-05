@@ -19,6 +19,7 @@ namespace AtlusScriptGUI
         public bool Overwrite { get; set; } = false;
         public bool SumBits { get; set; } = true;
         public bool DeleteHeader { get; set; } = false;
+        public bool BigEndianFlow { get; set; } = true;
 
         public void SaveJson(Config settings)
         {

@@ -52,6 +52,8 @@ namespace AtlusScriptGUI
             this.chk_Overwrite = new System.Windows.Forms.ToolStripMenuItem();
             this.chk_SumBits = new System.Windows.Forms.ToolStripMenuItem();
             this.chk_DeleteHeader = new System.Windows.Forms.ToolStripMenuItem();
+            this.chk_BigEndianFlowP3RE = new System.Windows.Forms.ToolStripMenuItem();
+            this.injectMSGIntoBFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toggleThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tlp_Main = new System.Windows.Forms.TableLayoutPanel();
@@ -59,7 +61,7 @@ namespace AtlusScriptGUI
             this.groupBox_BitFlagConverter = new System.Windows.Forms.GroupBox();
             this.tlp_BitFlagConverter = new System.Windows.Forms.TableLayoutPanel();
             this.rtb_Log = new System.Windows.Forms.RichTextBox();
-            this.injectMSGIntoBFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setAtlusScriptCompilerPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip_Main.SuspendLayout();
             this.tlp_Main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer_Log)).BeginInit();
@@ -215,7 +217,9 @@ namespace AtlusScriptGUI
             this.chk_Overwrite,
             this.chk_SumBits,
             this.chk_DeleteHeader,
-            this.injectMSGIntoBFToolStripMenuItem});
+            this.chk_BigEndianFlowP3RE,
+            this.injectMSGIntoBFToolStripMenuItem,
+            this.setAtlusScriptCompilerPathToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(75, 24);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -227,7 +231,7 @@ namespace AtlusScriptGUI
             this.chk_Hook.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_Hook.Enabled = false;
             this.chk_Hook.Name = "chk_Hook";
-            this.chk_Hook.Size = new System.Drawing.Size(228, 26);
+            this.chk_Hook.Size = new System.Drawing.Size(281, 26);
             this.chk_Hook.Text = "Enable Hooking";
             this.chk_Hook.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -236,7 +240,7 @@ namespace AtlusScriptGUI
             this.chk_Disassemble.CheckOnClick = true;
             this.chk_Disassemble.Enabled = false;
             this.chk_Disassemble.Name = "chk_Disassemble";
-            this.chk_Disassemble.Size = new System.Drawing.Size(228, 26);
+            this.chk_Disassemble.Size = new System.Drawing.Size(281, 26);
             this.chk_Disassemble.Text = "Disassemble";
             this.chk_Disassemble.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -245,7 +249,7 @@ namespace AtlusScriptGUI
             this.chk_Overwrite.CheckOnClick = true;
             this.chk_Overwrite.Enabled = false;
             this.chk_Overwrite.Name = "chk_Overwrite";
-            this.chk_Overwrite.Size = new System.Drawing.Size(228, 26);
+            this.chk_Overwrite.Size = new System.Drawing.Size(281, 26);
             this.chk_Overwrite.Text = "Overwrite";
             this.chk_Overwrite.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -256,7 +260,7 @@ namespace AtlusScriptGUI
             this.chk_SumBits.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_SumBits.Enabled = false;
             this.chk_SumBits.Name = "chk_SumBits";
-            this.chk_SumBits.Size = new System.Drawing.Size(228, 26);
+            this.chk_SumBits.Size = new System.Drawing.Size(281, 26);
             this.chk_SumBits.Text = "Sum Bits";
             this.chk_SumBits.CheckedChanged += new System.EventHandler(this.Check_Changed);
             // 
@@ -265,9 +269,27 @@ namespace AtlusScriptGUI
             this.chk_DeleteHeader.CheckOnClick = true;
             this.chk_DeleteHeader.Enabled = false;
             this.chk_DeleteHeader.Name = "chk_DeleteHeader";
-            this.chk_DeleteHeader.Size = new System.Drawing.Size(228, 26);
+            this.chk_DeleteHeader.Size = new System.Drawing.Size(281, 26);
             this.chk_DeleteHeader.Text = "Delete .h";
             this.chk_DeleteHeader.CheckedChanged += new System.EventHandler(this.Check_Changed);
+            // 
+            // chk_BigEndianFlowP3RE
+            // 
+            this.chk_BigEndianFlowP3RE.Checked = true;
+            this.chk_BigEndianFlowP3RE.CheckOnClick = true;
+            this.chk_BigEndianFlowP3RE.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_BigEndianFlowP3RE.Enabled = false;
+            this.chk_BigEndianFlowP3RE.Name = "chk_BigEndianFlowP3RE";
+            this.chk_BigEndianFlowP3RE.Size = new System.Drawing.Size(281, 26);
+            this.chk_BigEndianFlowP3RE.Text = "Big Endian .FLOW (P3RE)";
+            this.chk_BigEndianFlowP3RE.CheckedChanged += new System.EventHandler(this.Check_Changed);
+            // 
+            // injectMSGIntoBFToolStripMenuItem
+            // 
+            this.injectMSGIntoBFToolStripMenuItem.Name = "injectMSGIntoBFToolStripMenuItem";
+            this.injectMSGIntoBFToolStripMenuItem.Size = new System.Drawing.Size(281, 26);
+            this.injectMSGIntoBFToolStripMenuItem.Text = "Inject .MSG into .BF...";
+            this.injectMSGIntoBFToolStripMenuItem.Click += new System.EventHandler(this.InjectMSG_Click);
             // 
             // openLogToolStripMenuItem
             // 
@@ -363,12 +385,12 @@ namespace AtlusScriptGUI
             this.rtb_Log.TabIndex = 0;
             this.rtb_Log.Text = "";
             // 
-            // injectMSGIntoBFToolStripMenuItem
+            // setAtlusScriptCompilerPathToolStripMenuItem
             // 
-            this.injectMSGIntoBFToolStripMenuItem.Name = "injectMSGIntoBFToolStripMenuItem";
-            this.injectMSGIntoBFToolStripMenuItem.Size = new System.Drawing.Size(228, 26);
-            this.injectMSGIntoBFToolStripMenuItem.Text = "Inject .MSG into .BF...";
-            this.injectMSGIntoBFToolStripMenuItem.Click += new System.EventHandler(this.InjectMSG_Click);
+            this.setAtlusScriptCompilerPathToolStripMenuItem.Name = "setAtlusScriptCompilerPathToolStripMenuItem";
+            this.setAtlusScriptCompilerPathToolStripMenuItem.Size = new System.Drawing.Size(281, 26);
+            this.setAtlusScriptCompilerPathToolStripMenuItem.Text = "Set AtlusScriptCompiler Path";
+            this.setAtlusScriptCompilerPathToolStripMenuItem.Click += new System.EventHandler(this.SetScriptCompilerPath_Click);
             // 
             // MainForm
             // 
@@ -438,6 +460,8 @@ namespace AtlusScriptGUI
         private System.Windows.Forms.ToolStripComboBox comboBox_Encoding;
         private System.Windows.Forms.ToolStripMenuItem defaultEncodingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem injectMSGIntoBFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem chk_BigEndianFlowP3RE;
+        private System.Windows.Forms.ToolStripMenuItem setAtlusScriptCompilerPathToolStripMenuItem;
     }
 }
 

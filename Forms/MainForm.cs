@@ -12,9 +12,8 @@ namespace AtlusScriptGUI
 {
     public partial class MainForm : MetroSetForm
     {
-        public static Version version = new Version(3, 3);
+        public static Version version = new Version(3, 4);
         public Config settings = new Config();
-        public string CompilerPath { get; set; } = "./AtlusScriptCompiler.exe";
 
         public MainForm(string[] args)
         {
@@ -26,12 +25,10 @@ namespace AtlusScriptGUI
             MenuStripHelper.SetMenuStripIcons(MenuStripHelper.GetMenuStripIconPairs("Icons.txt"), this);
 
             ApplyCheckboxStates();
-            SetCompilerPath(args);
             SetDropDowns();
             SetLogging();
             
             this.Text += $" v{version.Major}.{version.Minor}";
         }
-
     }
 }

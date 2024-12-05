@@ -24,6 +24,7 @@ namespace AtlusScriptGUI
             "Persona 3 Portable",
             "Persona 3",
             "Persona 3 FES",
+            "Persona 3 Reload",
             "Persona 4",
             "Persona 4 Golden",
             "Persona 5",
@@ -39,6 +40,7 @@ namespace AtlusScriptGUI
             chk_Hook.Checked = settings.Hook;
             chk_Overwrite.Checked = settings.Overwrite;
             chk_SumBits.Checked = settings.SumBits;
+            chk_BigEndianFlowP3RE.Checked = settings.BigEndianFlow;
 
             EnableCheckboxes();
         }
@@ -50,6 +52,7 @@ namespace AtlusScriptGUI
             chk_Hook.Enabled = true;
             chk_Overwrite.Enabled = true;
             chk_SumBits.Enabled = true;
+            chk_BigEndianFlowP3RE.Enabled = true;
         }
 
         private void SetLogging()
@@ -58,23 +61,16 @@ namespace AtlusScriptGUI
             Output.LogControl = rtb_Log;
         }
 
-        private void SetCompilerPath(string[] args)
+        private bool SetCompilerPath()
         {
-            if (args.Length > 0 && File.Exists(args[0]))
-                CompilerPath = Path.GetFullPath(args[0]);
-            else
-                CompilerPath = settings.CompilerPath;
-
-            while (!File.Exists(CompilerPath))
+            var fileSelect = WinFormsDialogs.SelectFile("Select your AtlusScriptCompiler.exe", false, new string[] { "Executable File (.exe)" });
+            if (fileSelect.Count > 0 && File.Exists(fileSelect.First()))
             {
-                var fileSelect = WinFormsDialogs.SelectFile("Select your AtlusScriptCompiler.exe", false, new string[] { "Executable File (.exe)" });
-                if (fileSelect.Count > 0 && File.Exists(fileSelect.First()))
-                {
-                    CompilerPath = fileSelect.First();
-                    settings.CompilerPath = CompilerPath;
-                    settings.SaveJson(settings);
-                }
+                settings.CompilerPath = fileSelect.First();
+                settings.SaveJson(settings);
+                return true;
             }
+            return false;
         }
 
         private void SetDropDowns()
@@ -164,14 +160,57 @@ namespace AtlusScriptGUI
 
                     if (!decompile && (ext == ".MSG" || ext == ".FLOW"))
                         args = GetArguments(fileList[i], ext, "-Compile ");
-                    else if (decompile && ext == ".BMD" || ext == ".BF")
+                    else if (decompile && (ext == ".BMD" || ext == ".BF" || ext == ".UASSET"))
                         args = GetArguments(fileList[i], ext, "-Decompile ");
                     else
                         return;
-                        Exe.Run(Path.GetFullPath(CompilerPath), args, redirectStdOut: true);
+
+                    Exe.Run(Path.GetFullPath(settings.CompilerPath), args, redirectStdOut: true);
                 }
                 DeleteHeaderFiles(fileList);
+                ProcessUassetOutput(fileList, decompile);
             }).Start();
+        }
+
+        private void ProcessUassetOutput(string[] fileList, bool decompile)
+        {
+            if (settings.Game != "Persona 3 Reload")
+                return;
+
+            foreach (var file in fileList)
+            {
+                if (decompile && chk_Overwrite.Checked && Path.GetExtension(file).ToUpper() == ".UASSET")
+                {
+
+                        string bfFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_unwrapped.bf");
+                        string flowFile = bfFile + ".flow";
+                        string newFlowDest = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".flow");
+
+                        if (File.Exists(bfFile))
+                            File.Delete(bfFile);
+
+                        if (File.Exists(newFlowDest))
+                            File.Delete(newFlowDest);
+
+                        if (File.Exists(flowFile))
+                            File.Move(flowFile, newFlowDest);
+                }
+                else if (chk_Overwrite.Checked)
+                {
+                    string bfFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".bf");
+                    string uassetFile = bfFile + ".uasset";
+                    string newUassetDest = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".uasset");
+
+                    if (File.Exists(bfFile))
+                        File.Delete(bfFile);
+
+                    if (File.Exists(newUassetDest))
+                        File.Delete(newUassetDest);
+
+                    if (File.Exists(uassetFile))
+                        File.Move(uassetFile, newUassetDest);
+                }
+            }
         }
 
         private void DeleteHeaderFiles(string[] fileList)
@@ -233,6 +272,26 @@ namespace AtlusScriptGUI
                     libraryArg = "-Library P3F";
                     if (extension == ".MSG" || extension == ".FLOW")
                         outFormatArg = "-OutFormat V1";
+                    break;
+                case "Persona 3 Reload":
+                    encodingArg = "-Encoding UT";
+                    libraryArg = "-Library P3RE";
+                    if (extension == ".MSG" || extension == ".FLOW")
+                    {
+                        if (extension == ".MSG")
+                            outFormatArg = "-OutFormat V1RE";
+                        else if (extension == ".FLOW")
+                        {
+                            if (settings.BigEndianFlow)
+                                outFormatArg = "-OutFormat V4BE";
+                            else
+                                outFormatArg = "-OutFormat V4";
+                        }
+                    }
+                    else if (Path.GetFileName(droppedFilePath).ToLowerInvariant().Contains("bmd"))
+                        outFormatArg = "-InFormat MessageScriptBinary";
+                    else if (Path.GetFileName(droppedFilePath).ToLowerInvariant().Contains("bf"))
+                        outFormatArg = "-InFormat FlowScriptBinary";
                     break;
                 case "Persona 4":
                     encodingArg = "-Encoding P4";
@@ -297,6 +356,10 @@ namespace AtlusScriptGUI
                     args.Append(" -Hook ");
                 if (settings.SumBits)
                     args.Append(" -SumBits ");
+                if (compileArg == "-Compile " && File.Exists(Path.ChangeExtension(droppedFilePath, ".uasset")))
+                {
+                    args.Append("-UPatch \"" + Path.ChangeExtension(droppedFilePath, ".uasset") + "\" ");
+                }
                 if (compileArg == "-Compile " && settings.Overwrite)
                 {
                     string outPath = droppedFilePath.Replace(".flow", "")
@@ -307,6 +370,7 @@ namespace AtlusScriptGUI
                         args.Append($"-Out \"{outPath + ".bmd"}\" ");
                     else if (extension == ".FLOW")
                         args.Append($"-Out \"{outPath + ".bf"}\" ");
+                    
                 }
                 else if (compileArg == "-Decompile " && settings.Overwrite)
                 {
@@ -334,7 +398,7 @@ namespace AtlusScriptGUI
 
         public void OpenLog()
         {
-            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(CompilerPath)), "AtlusScriptCompiler.log");
+            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.CompilerPath)), "AtlusScriptCompiler.log");
             if (File.Exists(logPath))
             {
                 ProcessStartInfo start = new ProcessStartInfo();
