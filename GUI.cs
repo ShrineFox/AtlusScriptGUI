@@ -1,4 +1,4 @@
-﻿using MetroSet_UI.Forms;
+using MetroSet_UI.Forms;
 using ShrineFox.IO;
 using System;
 using System.Collections;
@@ -31,6 +31,8 @@ namespace AtlusScriptGUI
             "Persona 5 Royal (PS4)",
             "Persona 5 Royal (PC/Switch)",
             "Persona Q2",
+            "Catherine Classic",
+            "Catherine Full-Body",
         };
 
         private void ApplyCheckboxStates()
@@ -335,6 +337,22 @@ namespace AtlusScriptGUI
                     libraryArg = "-Library PQ2";
                     if (extension == ".MSG")
                         outFormatArg = "-OutFormat V1";
+                    if (extension == ".FLOW")
+                        outFormatArg = "-OutFormat V2";
+                    break;
+                case "Catherine Classic":
+                    encodingArg = "-Enconding CAT";
+                    libraryArg = "-Library CAT";
+                    if (extension == ".MSG")
+                        outFormatArg = "-OutFormat V2BE";
+                    if (extension == ".FLOW")
+                        outFormatArg = "-OutFormat V2BE";
+                    break;
+                case "Catherine Full-Body":
+                    encodingArg = "-Enconding CFB";
+                    libraryArg = "-Library CFB";
+                    if (extension == ".MSG")
+                        outFormatArg = "-OutFormat V2";
                     if (extension == ".FLOW")
                         outFormatArg = "-OutFormat V2";
                     break;
