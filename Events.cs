@@ -7,16 +7,9 @@ using AtlusScriptLibrary.MessageScriptLanguage;
 using MetroSet_UI.Forms;
 using ShrineFox.IO;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Reflection;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AtlusScriptGUI

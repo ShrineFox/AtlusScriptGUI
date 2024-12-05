@@ -1,18 +1,12 @@
-﻿using AtlusScriptGUI;
-using MetroSet_UI.Forms;
+﻿using MetroSet_UI.Forms;
 using ShrineFox.IO;
 using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace AtlusScriptGUI
 {
     public partial class MainForm : MetroSetForm
     {
-        public static Version version = new Version(3, 4, 1);
+        public static Version version = new Version(3, 4, 2);
         public Config settings = new Config();
 
         public MainForm(string[] args)
