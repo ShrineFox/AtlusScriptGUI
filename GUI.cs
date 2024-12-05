@@ -162,23 +162,14 @@ namespace AtlusScriptGUI
                     else
                         return;
 
-                    Exe.Run(Path.GetFullPath(settings.CompilerPath), args, redirectStdOut: true);
-                    if (CheckIfTaskSucceeded())
+                    bool success = Exe.Run(Path.GetFullPath(settings.CompilerPath), args, redirectStdOut: true);
+                    if (success)
                     {
                         ProcessUassetOutput(fileList[i], decompile);
                         DeleteHeaderFiles(fileList[i]);
                     }
                 }
             }).Start();
-        }
-
-        private bool CheckIfTaskSucceeded()
-        {
-            var logLines = new string[0];
-            rtb_Log.Invoke((Action)(() => logLines = rtb_Log.Text.Split('\n')));
-            if (logLines[logLines.Length - 2].Contains("Info: Task completed successfully!"))
-                return true;
-            return false;
         }
 
         private void ProcessUassetOutput(string file, bool decompile)
@@ -216,7 +207,7 @@ namespace AtlusScriptGUI
                 if (File.Exists(hFile))
                     File.Move(hFile, newHFileDest);
             }
-            else if (chk_Overwrite.Checked)
+            else
             {
                 string extension = ".bf";
                 if (Path.GetFileName(file).ToLower().Contains("bmd"))
@@ -239,13 +230,13 @@ namespace AtlusScriptGUI
 
         private void DeleteHeaderFiles(string file)
         {
-            if (!chk_DeleteHeader.Checked)
+            if (!settings.DeleteHeader)
                 return;
 
             if (Path.GetExtension(file).ToUpper() == ".BMD")
             {
                 string headerFile = file + ".msg.h";
-                if (chk_Overwrite.Checked)
+                if (settings.Overwrite)
                     headerFile = FileSys.GetExtensionlessPath(file) + ".msg.h";
 
                 if (File.Exists(headerFile))
@@ -254,7 +245,7 @@ namespace AtlusScriptGUI
             else if (Path.GetExtension(file).ToUpper() == ".UASSET" && Path.GetFileName(file).ToLower().Contains("bmd"))
             {
                 string headerFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_unwrapped.bmd.msg.h");
-                if (chk_Overwrite.Checked)
+                if (settings.Overwrite)
                     headerFile = FileSys.GetExtensionlessPath(file) + ".msg.h";
 
                 if (File.Exists(headerFile))
@@ -262,7 +253,7 @@ namespace AtlusScriptGUI
             }
         }
 
-        private string GetArguments(string droppedFilePath, string extension, string compileArg)
+        private string GetArguments(string inputFile, string extension, string compileArg)
         {
             string encodingArg = "";
             string libraryArg = "";
@@ -309,6 +300,7 @@ namespace AtlusScriptGUI
                 case "Persona 3 Reload":
                     encodingArg = "-Encoding UT";
                     libraryArg = "-Library P3RE";
+                    // OutFormat
                     if (extension == ".MSG" || extension == ".FLOW")
                     {
                         if (extension == ".MSG")
@@ -321,9 +313,9 @@ namespace AtlusScriptGUI
                                 outFormatArg = "-OutFormat V4";
                         }
                     }
-                    else if (Path.GetFileName(droppedFilePath).ToLowerInvariant().Contains("bmd"))
+                    else if (Path.GetFileName(inputFile).ToLowerInvariant().Contains("bmd"))
                         outFormatArg = "-InFormat MessageScriptBinary -OutFormat V1RE";
-                    else if (Path.GetFileName(droppedFilePath).ToLowerInvariant().Contains("bf"))
+                    else if (Path.GetFileName(inputFile).ToLowerInvariant().Contains("bf"))
                         outFormatArg = "-InFormat FlowScriptBinary";
                     break;
                 case "Persona 4":
@@ -392,7 +384,7 @@ namespace AtlusScriptGUI
             }
 
             StringBuilder args = new StringBuilder();
-            args.Append($"\"{droppedFilePath}\" ");
+            args.Append($"\"{inputFile}\" ");
             if (settings.Disassemble) //Omits all args if you are disassembling
                 args.Append($" -Disassemble");
             else
@@ -405,13 +397,13 @@ namespace AtlusScriptGUI
                     args.Append(" -Hook ");
                 if (settings.SumBits)
                     args.Append(" -SumBits ");
-                if (compileArg == "-Compile " && File.Exists(Path.ChangeExtension(droppedFilePath, ".uasset")))
+                if (compileArg == "-Compile " && File.Exists(Path.ChangeExtension(inputFile, ".uasset")))
                 {
-                    args.Append("-UPatch \"" + Path.ChangeExtension(droppedFilePath, ".uasset") + "\" ");
+                    args.Append("-UPatch \"" + Path.ChangeExtension(inputFile, ".uasset") + "\" ");
                 }
                 if (compileArg == "-Compile " && settings.Overwrite)
                 {
-                    string outPath = droppedFilePath.Replace(".flow", "")
+                    string outPath = inputFile.Replace(".flow", "")
                         .Replace(".FLOW", "").Replace(".msg", "").Replace(".MSG", "")
                         .Replace(".bf", "").Replace(".BF", "").Replace(".bmd", "")
                         .Replace(".BMD", "");
@@ -423,7 +415,7 @@ namespace AtlusScriptGUI
                 }
                 else if (compileArg == "-Decompile " && settings.Overwrite)
                 {
-                    string outPath = droppedFilePath.Replace(".bmd", "").Replace(".BMD", "");
+                    string outPath = inputFile.Replace(".bmd", "").Replace(".BMD", "");
                     if (extension == ".BF")
                         args.Append($"-Out \"{outPath + ".flow"}\" ");
                     else if (extension == ".BMD")
@@ -449,12 +441,7 @@ namespace AtlusScriptGUI
         {
             string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.CompilerPath)), "AtlusScriptCompiler.log");
             if (File.Exists(logPath))
-            {
-                ProcessStartInfo start = new ProcessStartInfo();
-                start.FileName = logPath;
-                start.UseShellExecute = true;
-                Process.Start(start);
-            }
+                Exe.Run(logPath);
         }
 
         private void ToggleTheme()
