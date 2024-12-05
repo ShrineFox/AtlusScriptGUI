@@ -169,8 +169,8 @@ namespace AtlusScriptGUI
 
                     Exe.Run(Path.GetFullPath(settings.CompilerPath), args, redirectStdOut: true);
                 }
-                DeleteHeaderFiles(fileList);
                 ProcessUassetOutput(fileList, decompile);
+                DeleteHeaderFiles(fileList);
             }).Start();
         }
 
@@ -183,45 +183,80 @@ namespace AtlusScriptGUI
             {
                 if (decompile && chk_Overwrite.Checked && Path.GetExtension(file).ToUpper() == ".UASSET")
                 {
-
-                        string bfFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_unwrapped.bf");
-                        string flowFile = bfFile + ".flow";
-                        string newFlowDest = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".flow");
-
-                        if (File.Exists(bfFile))
-                            File.Delete(bfFile);
-
-                        if (File.Exists(newFlowDest))
-                            File.Delete(newFlowDest);
-
-                        if (File.Exists(flowFile))
-                            File.Move(flowFile, newFlowDest);
-                }
-                else if (chk_Overwrite.Checked)
-                {
-                    string bfFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".bf");
-                    string uassetFile = bfFile + ".uasset";
-                    string newUassetDest = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".uasset");
+                    string bfFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_unwrapped.bf");
+                    string bmdFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_unwrapped.bmd");
+                    string flowFile = bfFile + ".flow";
+                    string msgFile = bmdFile + ".msg";
+                    string newFlowDest = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".flow");
+                    string newMsgDest = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".msg");
+                    string hFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_unwrapped.bmd.msg.h");
+                    string newHFileDest = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".msg.h");
+                    
+                    if (!File.Exists(flowFile) && !File.Exists(msgFile))
+                        return;
 
                     if (File.Exists(bfFile))
                         File.Delete(bfFile);
+                    if (File.Exists(bmdFile))
+                        File.Delete(bmdFile);
+
+                    if (File.Exists(newFlowDest))
+                        File.Delete(newFlowDest);
+                    if (File.Exists(newMsgDest))
+                        File.Delete(newMsgDest);
+                    if (File.Exists(newHFileDest))
+                        File.Delete(newHFileDest);
+
+                    if (File.Exists(flowFile))
+                        File.Move(flowFile, newFlowDest);
+                    if (File.Exists(msgFile))
+                        File.Move(msgFile, newMsgDest);
+                    if (File.Exists(hFile))
+                        File.Move(hFile, newHFileDest);
+                }
+                else if (chk_Overwrite.Checked)
+                {
+                    string extension = ".bf";
+                    if (Path.GetFileName(file).ToLower().Contains("bmd"))
+                        extension = ".bmd";
+
+                    string scriptFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + extension);
+                    string uassetFile = scriptFile + ".uasset";
+                    string newUassetDest = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".uasset");
+
+                    if (!File.Exists(uassetFile))
+                        return;
+
+                    if (File.Exists(scriptFile))
+                        File.Delete(scriptFile);
 
                     if (File.Exists(newUassetDest))
                         File.Delete(newUassetDest);
 
-                    if (File.Exists(uassetFile))
-                        File.Move(uassetFile, newUassetDest);
+                    File.Move(uassetFile, newUassetDest);
                 }
             }
         }
 
         private void DeleteHeaderFiles(string[] fileList)
         {
+            if (!chk_DeleteHeader.Checked)
+                return;
+
             foreach (var file in fileList)
             {
-                if (chk_DeleteHeader.Checked && Path.GetExtension(file).ToUpper() == ".BMD")
+                if (Path.GetExtension(file).ToUpper() == ".BMD")
                 {
                     string headerFile = file + ".msg.h";
+                    if (chk_Overwrite.Checked)
+                        headerFile = FileSys.GetExtensionlessPath(file) + ".msg.h";
+
+                    if (File.Exists(headerFile))
+                        File.Delete(headerFile);
+                }
+                else if (Path.GetExtension(file).ToUpper() == ".UASSET" && Path.GetFileName(file).ToLower().Contains("bmd"))
+                {
+                    string headerFile = Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + "_unwrapped.bmd.msg.h");
                     if (chk_Overwrite.Checked)
                         headerFile = FileSys.GetExtensionlessPath(file) + ".msg.h";
 
