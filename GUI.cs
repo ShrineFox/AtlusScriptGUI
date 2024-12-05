@@ -291,7 +291,7 @@ namespace AtlusScriptGUI
                         }
                     }
                     else if (Path.GetFileName(droppedFilePath).ToLowerInvariant().Contains("bmd"))
-                        outFormatArg = "-InFormat MessageScriptBinary";
+                        outFormatArg = "-InFormat MessageScriptBinary -OutFormat V1RE";
                     else if (Path.GetFileName(droppedFilePath).ToLowerInvariant().Contains("bf"))
                         outFormatArg = "-InFormat FlowScriptBinary";
                     break;
