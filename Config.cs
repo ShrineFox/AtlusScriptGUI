@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ShrineFox.IO;
 using System.IO;
 
 namespace AtlusScriptGUI
@@ -7,7 +8,6 @@ namespace AtlusScriptGUI
     {
         public string Game { get; set; } = "Persona 5 Royal (PC/Switch)";
         public string Encoding { get; set; } = "P5R_EFIGS";
-        public string CompilerPath { get; set; } = "./AtlusScriptCompiler.exe";
         public bool DarkMode { get; set; } = true;
         public bool Hook { get; set; } = true;
         public bool Disassemble { get; set; } = false;
@@ -15,6 +15,7 @@ namespace AtlusScriptGUI
         public bool SumBits { get; set; } = true;
         public bool DeleteHeader { get; set; } = false;
         public bool BigEndianFlow { get; set; } = true;
+        public bool CompilerLogOutput { get; set; } = true;
 
         public void SaveJson(Config settings)
         {

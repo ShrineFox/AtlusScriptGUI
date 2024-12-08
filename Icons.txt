@@ -1,3 +1,5 @@
 gameToolStripMenuItem controller
 optionsToolStripMenuItem cog
 toggleThemeToolStripMenuItem weather_cloudy
+encodingToolStripMenuItem text_replace
+updateToolStripMenuItem arrow_down

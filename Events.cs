@@ -18,6 +18,9 @@ namespace AtlusScriptGUI
     {
         private void Btn_Click(object sender, EventArgs e)
         {
+            if (!File.Exists(CompilerPath))
+                RunUpdater();
+
             var btn = (Button)sender;
             bool decompile = btn.Name.Contains("Decompile");
 
@@ -31,15 +34,14 @@ namespace AtlusScriptGUI
 
         private void Btn_DragDrop(object sender, DragEventArgs e)
         {
+            if (!File.Exists(CompilerPath))
+                RunUpdater();
+
             var btn = (Button)sender;
 
             string[] fileList = (string[])e.Data.GetData(DataFormats.FileDrop, false);
 
-            if (!File.Exists(settings.CompilerPath))
-                SetCompilerPath();
-
-            if (File.Exists(settings.CompilerPath))
-                Compile(fileList, btn.Name.Contains("Decompile"));
+            Compile(fileList, btn.Name.Contains("Decompile"));
         }
 
         private void Btn_DragEnter(object sender, DragEventArgs e)
@@ -67,6 +69,8 @@ namespace AtlusScriptGUI
 
             settings.Encoding = comboBox_Encoding.SelectedItem.ToString();
             settings.SaveJson(settings);
+            var encoding = GetSelectedEncoding();
+            Output.Log(encoding.EncodingName);
         }
 
         private void VanillaText_Changed(object sender, EventArgs e)
@@ -107,6 +111,7 @@ namespace AtlusScriptGUI
             if (!item.Enabled)
                 return;
 
+            settings.CompilerLogOutput = chk_CompilerLogOutput.Checked;
             settings.DeleteHeader = chk_DeleteHeader.Checked;
             settings.Disassemble = chk_Disassemble.Checked;
             settings.Hook = chk_Hook.Checked;
@@ -125,8 +130,8 @@ namespace AtlusScriptGUI
 
         private void InjectMSG_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(settings.CompilerPath) && !SetCompilerPath())
-                return;
+            if (!File.Exists(CompilerPath))
+                RunUpdater();
 
             string bfPath = "";
             string msgPath = "";
@@ -162,14 +167,20 @@ namespace AtlusScriptGUI
             MessageBox.Show("Done injecting message into .BF!");
         }
 
-        private void SetScriptCompilerPath_Click(object sender, EventArgs e)
-        {
-            SetCompilerPath();
-        }
-
         private Encoding GetSelectedEncoding()
         {
             return AtlusEncoding.GetEncodings().First(x => x.Name.Equals(comboBox_Encoding.SelectedItem.ToString())).GetEncoding();
+        }
+
+        private void UpdateCompiler_Click(object sender, EventArgs e)
+        {
+            RunUpdater();
+        }
+
+        private void RunUpdater()
+        {
+            Exe.Run(Path.Combine(Exe.Directory(), "Updater/AtlusScriptToolsUpdater.exe"), Exe.Directory(), false, "", false, false);
+            Environment.Exit(0);
         }
     }
 }

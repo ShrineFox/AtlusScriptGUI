@@ -2,7 +2,6 @@ using MetroSet_UI.Forms;
 using ShrineFox.IO;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +11,9 @@ namespace AtlusScriptGUI
 {
     public partial class MainForm : MetroSetForm
     {
+
+        public static string CompilerPath = Path.Combine(Exe.Directory(), "AtlusScriptCompiler.exe");
+
         public static List<string> GamesList = new List<string>()
         {
             "SMT 3 Nocturne",
@@ -32,6 +34,7 @@ namespace AtlusScriptGUI
 
         private void ApplyCheckboxStates()
         {
+            chk_CompilerLogOutput.Checked = settings.CompilerLogOutput;
             chk_DeleteHeader.Checked = settings.DeleteHeader;
             chk_Disassemble.Checked = settings.Disassemble;
             chk_Hook.Checked = settings.Hook;
@@ -44,6 +47,7 @@ namespace AtlusScriptGUI
 
         private void EnableCheckboxes()
         {
+            chk_CompilerLogOutput.Enabled = true;
             chk_DeleteHeader.Enabled = true;
             chk_Disassemble.Enabled = true;
             chk_Hook.Enabled = true;
@@ -56,18 +60,6 @@ namespace AtlusScriptGUI
         {
             Output.Logging = true;
             Output.LogControl = rtb_Log;
-        }
-
-        private bool SetCompilerPath()
-        {
-            var fileSelect = WinFormsDialogs.SelectFile("Select your AtlusScriptCompiler.exe", false, new string[] { "Executable File (.exe)" });
-            if (fileSelect.Count > 0 && File.Exists(fileSelect.First()))
-            {
-                settings.CompilerPath = fileSelect.First();
-                settings.SaveJson(settings);
-                return true;
-            }
-            return false;
         }
 
         private void SetDropDowns()
@@ -162,12 +154,15 @@ namespace AtlusScriptGUI
                     else
                         return;
 
-                    bool success = Exe.Run(Path.GetFullPath(settings.CompilerPath), args, redirectStdOut: true);
+                    bool success = Exe.Run(Path.GetFullPath(CompilerPath), args, redirectStdOut: settings.CompilerLogOutput);
                     if (success)
                     {
+                        Output.Log("Task Succeeded!", ConsoleColor.Green);
                         ProcessUassetOutput(fileList[i], decompile);
                         DeleteHeaderFiles(fileList[i]);
                     }
+                    else
+                        Output.Log("Task Failed.", ConsoleColor.Red);
                 }
             }).Start();
         }
@@ -439,7 +434,7 @@ namespace AtlusScriptGUI
 
         public void OpenLog()
         {
-            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.CompilerPath)), "AtlusScriptCompiler.log");
+            string logPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(CompilerPath)), "AtlusScriptCompiler.log");
             if (File.Exists(logPath))
                 Exe.Run(logPath);
         }
