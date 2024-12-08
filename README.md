@@ -1,23 +1,22 @@
 # AtlusScriptGUI
-![](https://i.imgur.com/UNgxNBR.png)  
+![](https://i.imgur.com/DwbSJu3.png)  
 GUI that automatically passes commandline arguments to AtlusScriptCompiler.  
-Also useful for converting bitflag IDs from vanilla to Royal.
+Also useful for converting bitflag IDs between vanilla P5 and Royal.
 # Usage
-1. Download and extract [AtlusScriptCompiler.exe](https://github.com/tge-was-taken/Atlus-Script-Tools).
-2. Download and extract the [latest release](https://github.com/ShrineFox/AtlusScriptGUI/releases) of AtlusScriptGUI from this repository.
-3. Edit ``Config.json`` with the path to your ``AtlusScriptCompiler.exe``. Be sure to use double-slashes!
-4. Run the program!
+1. Download and extract AtlusScriptGUI v3.5 or higher from [the Releases page](https://github.com/ShrineFox/AtlusScriptGUI/releases).
+2. Click "Update Compiler" in the top-right corner to install the latest Script Compiler build.
+3. Drag files onto the buttons to compile/decompile.
 
 # Latest Updates
-## [Update: 3.1](https://github.com/ShrineFox/AtlusScriptGUI/releases)
-- Fix compiling/decompiling multiple files at once
-- Fix relative path to AtlusScriptCompiler.exe not working
-- Separate dropdown list for Encoding (only used for games with multiple Encoding options)
-## Update: 3.0
-- Built-in light/dark theme toggle
-- You can now click the Compile/Decompile buttons to browse for files using a popup dialog
-- Options are hidden in the menustrip dropdowns for a more elegant appearance
-- Form is now freely resizable and features a built-in output log
-- Added option to delete .h files after decompiling .bmd to .msg
-- P5R_EFIGS encoding option added in place of PS4 EU
-- "Overwrite" option now applies to decompiling as well
+## [Update: 3.5](https://github.com/ShrineFox/AtlusScriptGUI/releases)
+- Adds an option to update to latest AtlusScriptCompiler via GitHub
+- Remove option to set AtlusScriptCompiler path (defaults to installation in AtlusScriptGUI folder)
+- Auto-download latest AtlusScriptCompiler when Exe is not found
+- Add toggle for showing output log (will simply print whether task succeeded or failed, helpful to speed up process for large files)
+## Update 3.4
+- Add Catherine Classic/FB Support
+- Add P3R Support
+- Added ability to decompile .uassets to .flow/.msg and vice versa
+- Added toggle for V4/V4BE BF output
+- Check for AtlusScriptCompiler.exe path when picking files instead of at startup
+- Added option to change AtlusScriptCompiler.exe path
