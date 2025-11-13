@@ -392,9 +392,32 @@ namespace AtlusScriptGUI
                     args.Append(" -Hook ");
                 if (settings.SumBits)
                     args.Append(" -SumBits ");
-                if (compileArg == "-Compile " && File.Exists(Path.ChangeExtension(inputFile, ".uasset")))
+                if (compileArg == "-Compile ")
                 {
-                    args.Append("-UPatch \"" + Path.ChangeExtension(inputFile, ".uasset") + "\" ");
+                    string uassetPath = Path.ChangeExtension(inputFile, ".uasset");
+
+                    if (settings.Game == "Persona 3 Reload")
+                    {
+                        string directory = Path.GetDirectoryName(inputFile) ?? string.Empty;
+                        string fileName = Path.GetFileName(inputFile) ?? string.Empty;
+                        string trimmedName = fileName;
+
+                        const string msgSuffix = "_unwrapped.bmd.msg";
+                        const string flowSuffix = "_unwrapped.bf.flow";
+
+                        if (fileName.EndsWith(msgSuffix, StringComparison.OrdinalIgnoreCase))
+                            trimmedName = fileName.Substring(0, fileName.Length - msgSuffix.Length);
+                        else if (fileName.EndsWith(flowSuffix, StringComparison.OrdinalIgnoreCase))
+                            trimmedName = fileName.Substring(0, fileName.Length - flowSuffix.Length);
+                        else
+                            trimmedName = Path.GetFileNameWithoutExtension(fileName) ?? string.Empty;
+
+                        if (!string.IsNullOrWhiteSpace(trimmedName))
+                            uassetPath = Path.Combine(directory, trimmedName + ".uasset");
+                    }
+
+                    if (File.Exists(uassetPath))
+                        args.Append("-UPatch \"" + uassetPath + "\" ");
                 }
                 if (compileArg == "-Compile " && settings.Overwrite)
                 {
